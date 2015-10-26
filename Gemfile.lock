@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     cangaroo (0.0.1)
+      json-schema (~> 2.5.1)
       rails (~> 4.2.4)
       simple_command (~> 0.0.9)
 
@@ -43,6 +44,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.8)
     arel (6.0.3)
     builder (3.2.2)
     diff-lcs (1.2.5)
@@ -56,6 +58,8 @@ GEM
       activesupport (>= 4.1.0)
     i18n (0.7.0)
     json (1.8.3)
+    json-schema (2.5.1)
+      addressable (~> 2.3.7)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)

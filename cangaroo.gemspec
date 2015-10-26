@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 4.2.4'
   s.add_dependency 'simple_command', '~> 0.0.9'
+  s.add_dependency 'json-schema', '~> 2.5.1'
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec-rails'
