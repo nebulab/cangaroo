@@ -4,20 +4,25 @@ module Cangaroo
   RSpec.describe EndpointController, type: :controller do
     routes { Cangaroo::Engine.routes }
 
-    let(:request_headers) { { 'Accept': 'application/json' } }
-
-    it 'accepts only application/json requests' do
-      post :create, nil, request_headers
-      expect(response.status).to eq(200)
-
-      post :create, nil, { 'Accept': 'text/html' }
-      expect(response.status).to eq(500)
+    before do
+      request.headers['Accept'] = 'application/json'
     end
 
-    it 'accepts only post method requests'
+    it 'accepts only application/json requests' do
+      post :create
+      expect(response.status).to eq(200)
+
+      request.headers['Accept'] = 'text/html'
+      post :create
+      expect(response.status).to eq(406)
+    end
 
     describe 'success' do
-      it 'responds with 200'
+      it 'responds with 200' do
+        post :create
+        expect(response.status).to eq(200)
+      end
+
       it 'responds with empty body'
     end
 

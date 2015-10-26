@@ -1,4 +1,4 @@
 Cangaroo::Engine.routes.draw do
 
-  resources :endpoint, constraints: { format: :json }
+  resources :endpoint, only: [:create], constraints: { format: :json }
 end
