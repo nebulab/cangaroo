@@ -3,6 +3,7 @@ PATH
   specs:
     cangaroo (0.0.1)
       rails (~> 4.2.4)
+      simple_command (~> 0.0.9)
 
 GEM
   remote: https://rubygems.org/
@@ -109,6 +110,7 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    simple_command (0.0.9)
     sprockets (3.4.0)
       rack (> 1, < 3)
     sprockets-rails (2.3.3)
