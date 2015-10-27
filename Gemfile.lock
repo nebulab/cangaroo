@@ -3,6 +3,7 @@ PATH
   specs:
     cangaroo (0.0.1)
       json-schema (~> 2.5.1)
+      mongoid (~> 5.0.0)
       rails (~> 4.2.4)
       simple_command (~> 0.0.9)
 
@@ -46,6 +47,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     arel (6.0.3)
+    bson (3.2.6)
     builder (3.2.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
@@ -67,8 +69,20 @@ GEM
     mime-types (2.6.2)
     mini_portile (0.6.2)
     minitest (5.8.1)
+    mongo (2.1.2)
+      bson (~> 3.0)
+    mongoid (5.0.0)
+      activemodel (~> 4.0)
+      mongo (~> 2.1)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
+    mongoid-rspec (3.0.0)
+      mongoid (~> 5.0)
+      rake
+      rspec (~> 3.3)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    origin (2.1.1)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -97,6 +111,10 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
     rspec-core (3.3.2)
       rspec-support (~> 3.3.0)
     rspec-expectations (3.3.1)
@@ -133,5 +151,6 @@ PLATFORMS
 DEPENDENCIES
   cangaroo!
   factory_girl_rails
+  mongoid-rspec
   rspec-rails
   sqlite3
