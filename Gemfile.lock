@@ -49,6 +49,7 @@ GEM
     arel (6.0.3)
     bson (3.2.6)
     builder (3.2.2)
+    database_cleaner (1.5.1)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     factory_girl (4.5.0)
@@ -150,6 +151,7 @@ PLATFORMS
 
 DEPENDENCIES
   cangaroo!
+  database_cleaner
   factory_girl_rails
   mongoid-rspec
   rspec-rails
