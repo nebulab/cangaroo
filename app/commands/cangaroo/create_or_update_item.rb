@@ -22,19 +22,15 @@ module Cangaroo
     end
 
     def type
-      @json_body.keys.first.to_sym
+      @json_body.keys.first
     end
 
     def item_id
-      @json_body[type.to_s]['id']
+      @json_body[type]['id']
     end
 
     def payload
-      if item.payload
-        item.payload.deep_merge(@json_body)
-      else
-        @json_body
-      end
+      item.payload ? item.payload.deep_merge(@json_body) : @json_body
     end
   end
 end
