@@ -8,5 +8,10 @@ module Cangaroo
       g.assets false
       g.helper false
     end
+
+    config.before_configuration do
+      Rails.configuration.cangaroo = ActiveSupport::OrderedOptions.new
+      Rails.configuration.cangaroo.jobs = []
+    end
   end
 end
