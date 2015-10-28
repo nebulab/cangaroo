@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028135022) do
+ActiveRecord::Schema.define(version: 20151028172151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cangaroo_connections", force: :cascade do |t|
+    t.string   "name"
+    t.string   "url"
+    t.string   "key"
+    t.string   "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "cangaroo_items", force: :cascade do |t|
     t.string   "item_type"
