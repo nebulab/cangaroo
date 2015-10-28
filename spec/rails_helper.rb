@@ -5,8 +5,8 @@ require File.expand_path('../dummy/config/environment.rb', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'shoulda-matchers'
 require 'factory_girl_rails'
-require 'mongoid-rspec'
 require 'database_cleaner'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -22,18 +22,24 @@ require 'database_cleaner'
 # of increasing the boot-up time by auto-requiring all files in the support
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
-#
 # Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
+ActiveRecord::Migration.maintain_test_schema!
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 RSpec.configure do |config|
-  config.include Mongoid::Matchers, type: :model
   config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 

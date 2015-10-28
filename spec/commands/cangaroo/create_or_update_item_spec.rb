@@ -2,11 +2,11 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe CreateOrUpdateItem do
-    let(:command) { CreateOrUpdateItem.new(body) }
+    let(:command) { CreateOrUpdateItem.new(body.to_json) }
 
     describe '#call' do
       context 'when item is a new one' do
-        let(:body) { { order: { id: 'R154085346172', amount: 10 } }.to_json }
+        let(:body) { { order: { id: 'R154085346172', amount: 10 } } }
         let(:item) { Cangaroo::Item.last }
 
         it 'returns true' do
@@ -20,7 +20,7 @@ module Cangaroo
 
         it 'sets the type from the first key of the payload' do
           command.call
-          expect(item.type).to eq(:order)
+          expect(item.item_type).to eq('order')
         end
 
         it 'sets the item_id from id into the first object of the payload' do
@@ -30,17 +30,17 @@ module Cangaroo
 
         it 'sets the payload' do
           command.call
-          expect(item.payload).to eq(JSON.parse(body))
+          expect(item.payload).to eq(body.deep_stringify_keys)
         end
       end
 
       context 'when it is an old item' do
         let!(:item) {
-          Cangaroo::Item.create( type: :order,
+          Cangaroo::Item.create( item_type: :order,
                                  item_id: 'R154085346172',
                                  payload: { order: { id: 'R154085346172', amount: 10 } } )
         }
-        let(:body) { { order: { id: 'R154085346172', discount: 5 } }.to_json }
+        let(:body) { { order: { id: 'R154085346172', discount: 5 } } }
 
         it 'returns true' do
           command.call
@@ -58,7 +58,7 @@ module Cangaroo
       end
 
       context 'when item can not be saved for some validation errors' do
-        let(:body) { { order: { discount: 5 } }.to_json }
+        let(:body) { { order: { discount: 5 } } }
 
         before { command.call }
 

@@ -3,7 +3,7 @@ module Cangaroo
     prepend SimpleCommand
 
     def initialize(json_body)
-      @json_body = json_body
+      @json_body = JSON.parse(json_body)
     end
 
     def call
@@ -18,27 +18,23 @@ module Cangaroo
     private
 
     def item
-      @item ||= Cangaroo::Item.where(type: type, item_id: item_id).first_or_initialize
+      @item ||= Cangaroo::Item.where(item_type: type, item_id: item_id).first_or_initialize
     end
 
     def type
-      parse_json_body.keys.first.to_sym
+      @json_body.keys.first.to_sym
     end
 
     def item_id
-      parse_json_body[type.to_s]['id']
+      @json_body[type.to_s]['id']
     end
 
     def payload
       if item.payload
-        item.payload.deep_merge(parse_json_body)
+        item.payload.deep_merge(@json_body)
       else
-        parse_json_body
+        @json_body
       end
-    end
-
-    def parse_json_body
-      JSON.parse(@json_body)
     end
   end
 end
