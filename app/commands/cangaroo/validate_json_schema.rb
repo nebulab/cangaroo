@@ -4,15 +4,19 @@ module Cangaroo
 
     SCHEMA = {
       "type": "object",
-      "maxProperties": 1,
+      "minProperties": 1,
       "additionalProperties": false,
       "patternProperties": {
         "^[a-z]*$": {
-          "type": "object",
-          "required": ["id"],
-          "properties": {
-            "id": {
-              "type": "string",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+              }
             }
           }
         }

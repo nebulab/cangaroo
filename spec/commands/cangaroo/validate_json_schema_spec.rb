@@ -10,7 +10,17 @@ module Cangaroo
       end
 
       context 'when json is well formatted' do
-        let(:body) { { order: { id: "R154085346172" } }.to_json }
+        let(:body) {
+          { orders: [
+              { id: 'O154085346172', state: 'cart' },
+              { id: 'O154085343224', state: 'payed' }
+            ],
+            shipments: [
+              { id: 'S53454325', state: 'shipped' },
+              { id: 'S53565543', state: 'waiting' }
+            ]
+          }.to_json
+        }
 
         it 'returns true' do
           expect(command.result).to be true
@@ -18,24 +28,18 @@ module Cangaroo
       end
 
       context 'when json is not well formatted' do
-        describe 'with unrecognized field' do
-          let(:body) { { order: { id: "R154085346172" }, unrecognized: {} }.to_json }
-
-          it 'returns false' do
-            expect(command.result).to be false
-          end
-
-          it 'fails' do
-            expect(command).to be_failure
-          end
-
-          it 'adds an error' do
-            expect(command.errors[:schema_error]).not_to be_empty
-          end
-        end
-
         describe 'with wrong main key' do
-          let(:body) { { "Wrong Key": { id: "R154085346172" } }.to_json }
+          let(:body) {
+            { 'Wrong Key': [
+                { id: 'O154085346172', state: 'cart' },
+                { id: 'O154085343224', state: 'payed' }
+              ],
+              shipments: [
+                { id: 'S53454325', state: 'shipped' },
+                { id: 'S53565543', state: 'waiting' }
+              ]
+            }.to_json
+          }
 
           it 'returns false' do
             expect(command.result).to be false
@@ -50,8 +54,18 @@ module Cangaroo
           end
         end
 
-        describe 'without main object id' do
-          let(:body) { { orders: { field: 'test' } }.to_json }
+        describe 'without an object id' do
+          let(:body) {
+            { orders: [
+                { state: 'cart' },
+                { id: 'O154085343224', state: 'payed' }
+              ],
+              shipments: [
+                { id: 'S53454325', state: 'shipped' },
+                { id: 'S53565543', state: 'waiting' }
+              ]
+            }.to_json
+          }
 
           it 'returns false' do
             expect(command.result).to be false
