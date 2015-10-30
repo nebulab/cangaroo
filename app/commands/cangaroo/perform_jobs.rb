@@ -4,11 +4,11 @@ module Cangaroo
 
     def initialize(item, jobs)
       @item = item
-      @jobs = jobs
+      @jobs = jobs.map {|klass| klass.new(@item) }
     end
 
     def call
-      @jobs.each { |job| job.enqueue if job.perform?(@item) }
+      @jobs.select {|job| job.perform?(@item) }.each {|job| job.enqueue }
     end
   end
 end

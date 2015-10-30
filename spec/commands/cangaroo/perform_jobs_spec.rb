@@ -2,19 +2,32 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe PerformJobs do
-    let(:command) { PerformJobs.new(item, [job_a, job_b]) }
-    let(:item) { create(:cangaroo_item) }
+    class JobA < Job
+      def perform?(item); true; end
+      def enqueue; nil; end
+    end
 
-    let(:job_a) { double(:job_a, { perform?: true, enqueue: nil }) }
-    let(:job_b) { double(:job_b, { perform?: false, enqueue: nil }) }
+    class JobB < Job
+      def perform?(item); false; end
+      def enqueue; nil; end
+    end
+
+    let(:command) { PerformJobs.new(item, [JobA, JobB]) }
+    let(:item) { create(:cangaroo_item) }
+    let(:job_a) { JobA.new item  }
+    let(:job_b) { JobB.new item  }
+
+    before do
+      allow(JobA).to receive(:new).and_return(job_a)
+      allow(JobB).to receive(:new).and_return(job_b)
+    end
 
     describe '#call' do
-
       before { command.call }
 
       it 'enqueues only cangaroo jobs that can perform' do
-        expect(job_a).to have_received(:enqueue)
-        expect(job_b).to_not have_received(:enqueue)
+        expect(command.result).to include(job_a)
+        expect(command.result).to_not include(job_b)
       end
     end
   end
