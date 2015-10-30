@@ -1,5 +1,5 @@
 module Cangaroo
-  class AuthorizeConnection
+  class AuthenticateConnection
     prepend SimpleCommand
 
     def initialize(key, token)

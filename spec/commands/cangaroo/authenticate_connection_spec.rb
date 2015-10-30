@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Cangaroo
-  RSpec.describe AuthorizeConnection do
+  RSpec.describe AuthenticateConnection do
     let(:connection) { create :cangaroo_connection }
 
     describe '#call' do
@@ -10,7 +10,7 @@ module Cangaroo
       end
 
       context 'when connection is found' do
-        let(:command) { AuthorizeConnection.new(connection.key, connection.token) }
+        let(:command) { AuthenticateConnection.new(connection.key, connection.token) }
 
         it 'returns the connection' do
           expect(command.result).to eq(connection)
@@ -18,7 +18,7 @@ module Cangaroo
       end
 
       context 'when connection is not found' do
-        let(:command) { AuthorizeConnection.new('wrong', 'credential') }
+        let(:command) { AuthenticateConnection.new('wrong', 'credential') }
 
         it 'adds an error' do
           expect(command.errors[:authentication]).not_to be_empty
