@@ -10,17 +10,7 @@ module Cangaroo
       end
 
       context 'when json is well formatted' do
-        let(:body) {
-          { orders: [
-              { id: 'O154085346172', state: 'cart' },
-              { id: 'O154085343224', state: 'payed' }
-            ],
-            shipments: [
-              { id: 'S53454325', state: 'shipped' },
-              { id: 'S53565543', state: 'waiting' }
-            ]
-          }.to_json
-        }
+        let(:body) { load_json('json_payload_ok') }
 
         it 'returns true' do
           expect(command.result).to be true
@@ -29,17 +19,7 @@ module Cangaroo
 
       context 'when json is not well formatted' do
         describe 'with wrong main key' do
-          let(:body) {
-            { 'Wrong Key': [
-                { id: 'O154085346172', state: 'cart' },
-                { id: 'O154085343224', state: 'payed' }
-              ],
-              shipments: [
-                { id: 'S53454325', state: 'shipped' },
-                { id: 'S53565543', state: 'waiting' }
-              ]
-            }.to_json
-          }
+          let(:body) { load_json('json_payload_wrong_key') }
 
           it 'returns false' do
             expect(command.result).to be false
@@ -55,17 +35,7 @@ module Cangaroo
         end
 
         describe 'without an object id' do
-          let(:body) {
-            { orders: [
-                { state: 'cart' },
-                { id: 'O154085343224', state: 'payed' }
-              ],
-              shipments: [
-                { id: 'S53454325', state: 'shipped' },
-                { id: 'S53565543', state: 'waiting' }
-              ]
-            }.to_json
-          }
+          let(:body) { load_json('json_payload_no_id') }
 
           it 'returns false' do
             expect(command.result).to be false
