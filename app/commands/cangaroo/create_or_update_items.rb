@@ -13,8 +13,8 @@ module Cangaroo
         end
       end.flatten
     rescue ActiveRecord::RecordInvalid
-      errors.add(:item_errors, 'Error')
-      false
+      errors.add(:error, 'Error')
+      []
     end
   end
 end

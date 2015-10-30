@@ -9,8 +9,8 @@ module Cangaroo
 
     def call
       return connection if connection
-      errors.add(:authentication, 'wrong credentials')
-      false
+      errors.add(:error, 'wrong credentials')
+      nil
     end
 
     private

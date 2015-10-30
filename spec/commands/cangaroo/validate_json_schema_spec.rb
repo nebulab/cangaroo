@@ -30,7 +30,7 @@ module Cangaroo
           end
 
           it 'adds an error' do
-            expect(command.errors[:schema_error]).not_to be_empty
+            expect(command.errors[:error]).not_to be_empty
           end
         end
 
@@ -46,7 +46,7 @@ module Cangaroo
           end
 
           it 'adds an error' do
-            expect(command.errors[:schema_error]).not_to be_empty
+            expect(command.errors[:error]).not_to be_empty
           end
         end
 

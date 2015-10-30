@@ -55,7 +55,7 @@ module Cangaroo
         before { command.call }
 
         it 'returns false' do
-          expect(command.result).to be false
+          expect(command.result).to be_empty
         end
 
         it 'fails' do
@@ -63,7 +63,7 @@ module Cangaroo
         end
 
         it 'adds an error' do
-          expect(command.errors[:item_errors]).not_to be_empty
+          expect(command.errors[:error]).not_to be_empty
         end
       end
     end

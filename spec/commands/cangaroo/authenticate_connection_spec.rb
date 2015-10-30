@@ -21,11 +21,11 @@ module Cangaroo
         let(:command) { AuthenticateConnection.new('wrong', 'credential') }
 
         it 'adds an error' do
-          expect(command.errors[:authentication]).not_to be_empty
+          expect(command.errors[:error]).not_to be_empty
         end
 
         it 'returns false' do
-          expect(command.result).to be false
+          expect(command.result).to be nil
         end
       end
     end

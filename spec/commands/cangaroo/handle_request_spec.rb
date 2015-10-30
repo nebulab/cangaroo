@@ -26,7 +26,23 @@ module Cangaroo
         end
       end
 
-      
+      context "when failure" do
+        let(:json_payload) { load_fixture('json_payload_no_id.json') }
+        let(:connection) { create :cangaroo_connection }
+
+        it "authenticates connection" do
+          expect(command.authenticated?).to be true
+        end
+
+        it "validates json schema" do
+          expect(command.valid_json?).to be false
+        end
+
+        it 'saves items' do
+          expect(command.items).to be_empty
+        end
+      end
+
     end
   end
 end

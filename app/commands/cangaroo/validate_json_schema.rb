@@ -30,7 +30,7 @@ module Cangaroo
     def call
       json_errors = JSON::Validator.fully_validate(SCHEMA, @json_body)
       unless json_errors.empty?
-        json_errors.each { |err| errors.add(:schema_error, err) }
+        json_errors.each { |err| errors.add(:error, err) }
         return false
       end
       true

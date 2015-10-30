@@ -3,62 +3,42 @@ module Cangaroo
     prepend SimpleCommand
 
     def initialize(key, token, payload)
-      @valid_payload = validate_json_payload payload
-      @connection = authenticate_connection(key, token)
-      @items = save_items(payload)
+      @key = key
+      @token = token
+      @payload = payload
     end
 
     def call
-      unless authenticated? && valid_json?
+      unless authenticated? && valid_json? && items.any?
         return false
       end
 
-
-    end
-
-    def items
-      @items
+      items
     end
 
     def authenticated?
-      @connection.present?
+      @authenticated ||= run_command(AuthenticateConnection, @key, @token).present?
     end
 
     def valid_json?
-      @valid_payload
+      return false unless authenticated?
+
+      @valid_json ||= run_command ValidateJsonSchema, @payload
+    end
+
+    def items
+      return [] unless authenticated? && valid_json?
+
+      @items ||= run_command CreateOrUpdateItems, @payload
     end
 
     private
 
-    def save_items(payload)
-      return [] unless valid_json?
+    def run_command(command, *args)
+      cmd = command.call *args
 
-      saved_items = CreateOrUpdateItems.call payload
-      unless saved_items.success?
-        errors.add :error, saved_items.errors[:item_errors]
-        return []
-      end
-      saved_items.result
-    end
-
-    def authenticate_connection(key, token)
-      authentication = AuthenticateConnection.call key, token
-
-      unless authentication.success?
-        errors.add :error, @authentication.errors[:authentication]
-        return nil
-      end
-      authentication.result
-    end
-
-    def validate_json_payload(payload)
-      json_validation = ValidateJsonSchema.call payload
-
-      unless json_validation.success?
-        errors.add :error, json_validation.errors[:schema_error]
-        return false
-      end
-      true
+      errors.add(:error, cmd.errors[:error]) unless cmd.success?
+      cmd.result
     end
   end
 end
