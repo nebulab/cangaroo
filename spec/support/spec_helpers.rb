@@ -1,8 +1,6 @@
 module Cangaroo::SpecHelpers
-  def load_json(filename)
-    JSON.parse(File.read(
-      File.expand_path("../../fixtures/#{filename}.json", __FILE__)
-    ))
+  def load_fixture(filename)
+    File.read(File.expand_path("../../fixtures/#{filename}", __FILE__))
   end
 end
 

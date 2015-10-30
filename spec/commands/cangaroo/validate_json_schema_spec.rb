@@ -10,7 +10,7 @@ module Cangaroo
       end
 
       context 'when json is well formatted' do
-        let(:body) { load_json('json_payload_ok') }
+        let(:body) { JSON.parse(load_fixture('json_payload_ok.json')) }
 
         it 'returns true' do
           expect(command.result).to be true
@@ -19,7 +19,7 @@ module Cangaroo
 
       context 'when json is not well formatted' do
         describe 'with wrong main key' do
-          let(:body) { load_json('json_payload_wrong_key') }
+          let(:body) { JSON.parse(load_fixture('json_payload_wrong_key.json')) }
 
           it 'returns false' do
             expect(command.result).to be false
@@ -35,7 +35,7 @@ module Cangaroo
         end
 
         describe 'without an object id' do
-          let(:body) { load_json('json_payload_no_id') }
+          let(:body) { JSON.parse(load_fixture('json_payload_no_id.json')) }
 
           it 'returns false' do
             expect(command.result).to be false

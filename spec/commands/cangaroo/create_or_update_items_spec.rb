@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe CreateOrUpdateItems do
-    let(:command) { CreateOrUpdateItems.new(body.to_json) }
+    let(:command) { CreateOrUpdateItems.new(body) }
 
     describe '#call' do
       let(:order_item) { Cangaroo::Item.find_by(item_type: 'orders', item_id: 'O154085346172') }
@@ -16,7 +16,7 @@ module Cangaroo
             shipments: [
               { id: 'S53454325', state: 'shipped' },
             ]
-          }
+          }.to_json
         }
 
         it 'returns the list of saved items' do
@@ -49,7 +49,7 @@ module Cangaroo
             shipments: [
               { id: 'S53454325', state: 'shipped' },
             ]
-          }
+          }.to_json
         }
 
         before { command.call }
