@@ -8,11 +8,9 @@ module Cangaroo
 
     def call
       begin
-        items = []
-        @json_body.each do |type, payloads|
-          items << first_or_initialize_items(type, payloads)
-        end
-        items.flatten
+        @json_body.map do |type, payloads|
+          first_or_initialize_items(type, payloads)
+        end.flatten
       rescue ActiveRecord::RecordInvalid
         errors.add(:item_errors, 'Error')
         false
