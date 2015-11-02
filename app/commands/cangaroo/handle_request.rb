@@ -2,9 +2,10 @@ module Cangaroo
   class HandleRequest
     prepend SimpleCommand
 
-    def initialize(key, token, payload)
-      @key = key
-      @token = token
+    def initialize(payload, connection)
+      @key = connection.key
+      @token = connection.token
+      @connection = connection
       @payload = payload
     end
 
@@ -29,7 +30,7 @@ module Cangaroo
     def items
       return [] unless authenticated? && valid_json?
 
-      @items ||= run_command CreateOrUpdateItems, @payload
+      @items ||= run_command CreateOrUpdateItems, @payload, @connection
     end
 
     private

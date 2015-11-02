@@ -2,7 +2,8 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe HandleRequest do
-    let(:command) { HandleRequest.new(connection.key, connection.token, json_payload) }
+    let(:connection) { create :cangaroo_connection }
+    let(:command) { HandleRequest.new(json_payload, connection) }
 
     describe "call" do
       before do
@@ -11,7 +12,6 @@ module Cangaroo
 
       context "when success" do
         let(:json_payload) { load_fixture('json_payload_ok.json') }
-        let(:connection) { create :cangaroo_connection }
 
         it "authenticates connection" do
           expect(command.authenticated?).to be true
@@ -28,7 +28,6 @@ module Cangaroo
 
       context "when failure" do
         let(:json_payload) { load_fixture('json_payload_no_id.json') }
-        let(:connection) { create :cangaroo_connection }
 
         it "authenticates connection" do
           expect(command.authenticated?).to be true
