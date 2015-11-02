@@ -28,7 +28,7 @@ module Cangaroo
       private
 
       def url
-        URI.parse(HTTParty.normalize_base_uri(connection.url)).merge(self.path).to_s
+        URI.parse(HTTParty.normalize_base_uri(connection.url)).merge(self.path.to_s).to_s
       end
 
       def headers
