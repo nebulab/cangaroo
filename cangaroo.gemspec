@@ -20,11 +20,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4.2.4'
   s.add_dependency 'simple_command', '~> 0.0.9'
   s.add_dependency 'json-schema', '~> 2.5.1'
+  s.add_dependency 'httparty', '~> 0.13.7'
 
   s.add_development_dependency 'pg'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'factory_girl_rails'
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'shoulda-matchers'
+  s.add_development_dependency 'webmock'
   s.add_development_dependency 'simplecov'
 end

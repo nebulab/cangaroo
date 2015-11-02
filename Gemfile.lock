@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     cangaroo (0.0.1)
+      httparty (~> 0.13.7)
       json-schema (~> 2.5.1)
       rails (~> 4.2.4)
       simple_command (~> 0.0.9)
@@ -47,6 +48,8 @@ GEM
     addressable (2.3.8)
     arel (6.0.3)
     builder (3.2.2)
+    crack (0.4.2)
+      safe_yaml (~> 1.0.0)
     database_cleaner (1.5.1)
     diff-lcs (1.2.5)
     docile (1.1.5)
@@ -58,6 +61,9 @@ GEM
       railties (>= 3.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.3)
     json-schema (2.5.1)
@@ -69,6 +75,7 @@ GEM
     mime-types (2.6.2)
     mini_portile (0.6.2)
     minitest (5.8.2)
+    multi_xml (0.5.5)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     pg (0.18.3)
@@ -117,6 +124,7 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    safe_yaml (1.0.4)
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
     simple_command (0.0.9)
@@ -135,6 +143,9 @@ GEM
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    webmock (1.21.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
 
 PLATFORMS
   ruby
@@ -147,3 +158,4 @@ DEPENDENCIES
   rspec-rails
   shoulda-matchers
   simplecov
+  webmock
