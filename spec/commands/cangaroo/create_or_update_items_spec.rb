@@ -2,7 +2,9 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe CreateOrUpdateItems do
-    let(:command) { CreateOrUpdateItems.new(body) }
+
+    let(:command) { CreateOrUpdateItems.new(body, connection) }
+    let(:connection) { create(:cangaroo_connection) }
 
     describe '#call' do
       let(:order_item) { Cangaroo::Item.find_by(item_type: 'orders', item_id: 'O154085346172') }
