@@ -8,7 +8,7 @@ module Cangaroo
     end
 
     def call
-      @jobs.select {|job| job.perform?(@item) }.each {|job| job.enqueue }
+      @jobs.select {|job| job.perform? }.each {|job| job.enqueue }
     end
   end
 end
