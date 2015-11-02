@@ -5,6 +5,14 @@ module Cangaroo
 
     belongs_to :connection, foreign_key: :cangaroo_connection_id
 
+    def created?
+      created_at == updated_at
+    end
+
+    def updated?
+      !created?
+    end
+
     def payload=(new_payload)
       super(payload ? payload.deep_merge(new_payload) : new_payload)
     end

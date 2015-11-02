@@ -15,6 +15,31 @@ module Cangaroo
 
     it { is_expected.to belong_to(:connection).with_foreign_key(:cangaroo_connection_id) }
 
+    describe '#created?' do
+      let(:item) { create(:cangaroo_item) }
+      it 'returns true when new item' do
+        expect(item.created?).to be true
+      end
+
+      it 'returns false when updated item' do
+        item.update_attribute(:payload, { order: { id: 'R1234' }})
+        expect(item.created?).to be false
+      end
+    end
+
+    describe '#updated?' do
+      let(:item) { create(:cangaroo_item) }
+
+      it 'returns false when new item' do
+        expect(item.updated?).to be false
+      end
+
+      it 'returns true when updated item' do
+        item.update_attribute(:payload, { order: { id: 'R1234' }})
+        expect(item.updated?).to be true
+      end
+    end
+
     describe '.create_with!' do
       let(:create_with!) do
         Cangaroo::Item.create_with!(
