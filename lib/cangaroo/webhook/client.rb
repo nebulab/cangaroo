@@ -21,7 +21,7 @@ module Cangaroo
         if req.response.code == '200'
           req.parsed_response
         else
-          raise Cangaroo::Webhook::Error
+          raise Cangaroo::Webhook::Error, req.parsed_response['summary']
         end
       end
 
