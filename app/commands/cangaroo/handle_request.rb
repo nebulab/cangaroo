@@ -13,7 +13,9 @@ module Cangaroo
         return false
       end
 
-      items
+      perform_jobs
+
+      item_count
     end
 
     def connection
@@ -30,14 +32,21 @@ module Cangaroo
       return {} unless connection.present? && valid_json?
       return @items if @items
 
-      items = run_command CreateOrUpdateItems, @payload, connection
-      @items = Hash.new(0)
+      @items ||= run_command CreateOrUpdateItems, @payload, connection
+    end
 
+    def perform_jobs
       items.each do |item|
-        @items[item.item_type] += 1
+        PerformJobs.call(item, Rails.configuration.cangaroo.jobs)
       end
+    end
 
-      @items
+    def item_count
+      @item_count = Hash.new(0)
+      items.each do |item|
+        @item_count[item.item_type] += 1
+      end
+      @item_count
     end
 
     private

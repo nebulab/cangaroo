@@ -7,6 +7,7 @@ module Cangaroo
 
     describe "call" do
       before do
+        allow(PerformJobs).to receive(:call)
         command.call
       end
 
@@ -24,6 +25,15 @@ module Cangaroo
         it 'saves items' do
           expect(command.items).not_to be_empty
         end
+
+        it 'perform jobs' do
+          expect(PerformJobs).to have_received(:call).exactly(4).times
+        end
+
+        it 'returns the the number of objects received in payload' do
+          expect(command.result).to eq({ 'orders' => 2, 'shipments' => 2})
+        end
+
       end
 
       context "when failure" do
