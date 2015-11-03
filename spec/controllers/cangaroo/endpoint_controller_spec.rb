@@ -5,13 +5,6 @@ module Cangaroo
     routes { Cangaroo::Engine.routes }
     let(:connection) { create :cangaroo_connection }
     let(:request_payload) { JSON.parse(load_fixture('json_payload_ok.json')) }
-    # let(:request_headers) {
-    #   {
-    #     'X-Hub-Store' => connection.key,
-    #     'X-Hub-Access-Token' => connection.token,
-    #     'Accept' => 'application/json'
-    #   }
-    # }
 
     before do
       request.headers['Accept'] = 'application/json'
@@ -46,8 +39,19 @@ module Cangaroo
       end
 
       context 'when error' do
-        it 'responds with 500'
-        it 'responds with error messages in the body'
+
+        before do
+          request.headers['X-Hub-Access-Token'] = 'wrongtoken'
+          post :create, request_payload
+        end
+
+        it 'responds with 500' do
+          expect(response.status).to eq(500)
+        end
+
+        it 'responds with error messages in the body' do
+          expect(JSON.parse(response.body)['error']).to be_present
+        end
       end
     end
   end
