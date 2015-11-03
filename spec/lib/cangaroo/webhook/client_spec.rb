@@ -32,7 +32,7 @@ module Cangaroo
               request_id: request_id,
               parameters: parameters,
               order: { id: 'R12345', state: 'completed' }
-            }
+            }.to_json
           })
         end
 

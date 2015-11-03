@@ -16,7 +16,7 @@ module Cangaroo
         req = self.class.post(url, {
           headers: headers,
           query: connection.parameters,
-          body: body(payload, request_id, parameters)
+          body: body(payload, request_id, parameters).to_json
         })
         if req.response.code == '200'
           req.parsed_response
@@ -32,7 +32,7 @@ module Cangaroo
       end
 
       def headers
-        { 'X-Hub-Store': connection.key, 'X-Hub-Token': connection.token }
+        { 'X-Hub-Store' => connection.key, 'X-Hub-Token' => connection.token }
       end
 
       def body(payload, request_id, parameters)
