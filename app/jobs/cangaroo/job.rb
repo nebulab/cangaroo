@@ -2,22 +2,14 @@ module Cangaroo
   class Job < ActiveJob::Base
     queue_as :cangaroo
 
-    cattr_accessor :connection_name, :path, :parameters
-    attr_accessor :item
-
+    class_attribute :connection_name, :webhook_path, :webhook_parameters
     class << self
-      def connection_name(name)
-        self.connection_name = name
-      end
-
-      def path(path)
-        self.path = path || ''
-      end
-
-      def parameters(params)
-        self.parameters = (params || {})
-      end
+      def connection(name); self.connection_name = name; end
+      def path(path); self.webhook_path = path; end
+      def parameters(parameters); self.webhook_parameters = parameters; end
     end
+
+    attr_accessor :item
 
     def initialize(*arguments)
       @item = arguments.first
@@ -26,14 +18,14 @@ module Cangaroo
 
     def perform(item)
       Cangaroo::Webhook::Client.new(connection, path)
-        .post(transform, @job_id, parameters)
+        .post(transform(item), @job_id, parameters)
     end
 
     def perform?
       raise NotImplementedError
     end
 
-    def transform
+    def transform(item)
       item.payload
     end
 
@@ -41,6 +33,18 @@ module Cangaroo
 
     def connection
       @connection ||= Cangaroo::Connection.find_by!(name: connection_name)
+    end
+
+    def connection_name
+      self.class.connection_name
+    end
+
+    def path
+      self.class.webhook_path || ''
+    end
+
+    def parameters
+      self.class.webhook_parameters || {}
     end
   end
 end

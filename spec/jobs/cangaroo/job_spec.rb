@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 class FakeJob < Cangaroo::Job
-  connection_name :store
+  connection :store
   path '/webhook_path'
   parameters({ email: 'info@nebulab.it' })
 end
@@ -30,7 +30,7 @@ module Cangaroo
       it 'calls post on client' do
         job = job_class.new(item)
         job.perform_now
-        expect(client).to have_received(:post).with(job.transform, job.job_id, { email: 'info@nebulab.it' })
+        expect(client).to have_received(:post).with(job.transform(item), job.job_id, { email: 'info@nebulab.it' })
       end
     end
 
@@ -39,7 +39,7 @@ module Cangaroo
     end
 
     describe '#transform' do
-      it { expect(job_class.new(item).transform ).to eq(item.payload) }
+      it { expect(job_class.new.transform(item) ).to eq(item.payload) }
     end
   end
 end
