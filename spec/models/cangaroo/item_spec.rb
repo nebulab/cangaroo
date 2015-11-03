@@ -80,6 +80,14 @@ module Cangaroo
         it 'does not update the connection' do
           expect(item.connection).to eq(connection)
         end
+
+        context 'when payload is not changed' do
+          let(:new_payload) { payload }
+
+          it 'touches updated_at' do
+            expect(item.updated_at).to be > (item.created_at)
+          end
+        end
       end
     end
 
