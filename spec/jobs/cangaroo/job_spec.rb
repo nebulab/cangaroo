@@ -39,7 +39,7 @@ module Cangaroo
     end
 
     describe '#transform' do
-      it { expect(job_class.new.transform(item) ).to eq(item.payload) }
+      it { expect(job_class.new.transform(item) ).to eq({ "order" => item.payload }) }
     end
   end
 end

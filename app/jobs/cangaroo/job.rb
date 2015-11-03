@@ -26,7 +26,9 @@ module Cangaroo
     end
 
     def transform(item)
-      item.payload
+      payload = {} 
+      payload[item.item_type.singularize] = item.payload
+      payload
     end
 
     private
