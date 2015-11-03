@@ -8,6 +8,7 @@ module Cangaroo
 
     before do
       request.headers['Accept'] = 'application/json'
+      request.headers['Content-Type'] = 'application/json'
       request.headers['X-Hub-Store'] = connection.key
       request.headers['X-Hub-Access-Token'] = connection.token
     end
@@ -20,7 +21,13 @@ module Cangaroo
       it 'accepts only application/json requests' do
         expect(response.status).to eq(200)
 
+        request.headers['Content-Type'] = 'application/json'
         request.headers['Accept'] = 'text/html'
+        post :create
+        expect(response.status).to eq(406)
+
+        request.headers['Content-Type'] = 'text/html'
+        request.headers['Accept'] = 'application/json'
         post :create
         expect(response.status).to eq(406)
       end

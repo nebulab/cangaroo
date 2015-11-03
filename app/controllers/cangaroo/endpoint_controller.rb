@@ -16,11 +16,11 @@ module Cangaroo
     private
 
     def handle_request
-      @command = HandleRequest.call request.request_parameters.to_json, key, token
+      @command = HandleRequest.call params[:endpoint].to_json, key, token
     end
 
     def ensure_json_request
-      return if request.headers['Accept'] == 'application/json'
+      return if request.headers['Accept'] == 'application/json' && request.headers['Content-Type'] == 'application/json'
       render nothing: true, status: 406
     end
 
