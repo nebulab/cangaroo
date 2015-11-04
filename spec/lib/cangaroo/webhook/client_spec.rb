@@ -16,7 +16,7 @@ module Cangaroo
 
       let(:response) {
         { "request_id": "52f367367575e449c3000001",
-          "summary": "Successfully updated inventory for ROR-7890123" }
+          "summary": "Successfully updated order for R12345" }
       }
 
       before do
@@ -46,7 +46,7 @@ module Cangaroo
           let(:failure_response) {
             {
               "request_id": "52f367367575e449c3000001",
-              "summary": "Cannot update inventory. Product ROR-7890123 not found in storefront."
+              "summary": "Cannot update order. Order R12345 not found in storefront."
             }
           }
 
