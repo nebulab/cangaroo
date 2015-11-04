@@ -22,11 +22,7 @@ module Cangaroo
       item = self.where(item_type: attributes[:item_type],
                  item_id: attributes[:payload][:id]).first_or_initialize
       item.payload = attributes[:payload]
-      if item.new_record?
-        item.connection = attributes[:connection]
-      else
-        item.touch
-      end
+      item.connection = attributes[:connection] if item.new_record?
       item.save!
       item
     end

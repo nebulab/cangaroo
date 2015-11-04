@@ -84,8 +84,8 @@ module Cangaroo
         context 'when payload is not changed' do
           let(:new_payload) { payload }
 
-          it 'touches updated_at' do
-            expect(item.updated_at).to be > (item.created_at)
+          it 'does not touches updated_at' do
+            expect(item.updated_at).to eq(item.created_at)
           end
         end
       end
