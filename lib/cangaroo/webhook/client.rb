@@ -15,7 +15,6 @@ module Cangaroo
       def post(payload, request_id, parameters)
         req = self.class.post(url, {
           headers: headers,
-          query: connection.parameters,
           body: body(payload, request_id, parameters).to_json
         })
         if req.response.code == '200'
@@ -36,7 +35,9 @@ module Cangaroo
       end
 
       def body(payload, request_id, parameters)
-        { request_id: request_id, parameters: parameters }.merge(payload)
+        { request_id: request_id,
+          parameters: connection.parameters.deep_merge(parameters)
+        }.merge(payload)
       end
     end
   end

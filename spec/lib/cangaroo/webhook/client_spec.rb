@@ -24,13 +24,13 @@ module Cangaroo
       end
 
       describe '.post' do
-        it 'makes the post request with correct url, headers, query and body' do
+        it 'makes the post request with correct url, headers and body' do
           client.post(payload, request_id, parameters)
-          expect(WebMock).to have_requested(:post, "http://www.store.com/api_path?first=first&second=second").with({
+          expect(WebMock).to have_requested(:post, "http://www.store.com/api_path").with({
             headers: { 'X-Hub-Store': connection.key, 'X-Hub-Token': connection.token },
             body: {
               request_id: request_id,
-              parameters: parameters,
+              parameters: connection.parameters.deep_merge(parameters),
               order: { id: 'R12345', state: 'completed' }
             }.to_json
           })
