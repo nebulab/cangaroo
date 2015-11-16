@@ -1,21 +1,24 @@
-$:.push File.expand_path("../lib", __FILE__)
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 # Maintain your gem's version:
-require "cangaroo/version"
+require 'cangaroo/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "cangaroo"
+  s.name        = 'cangaroo'
   s.version     = Cangaroo::VERSION
-  s.authors     = ["Alessio Rocco", "Andrea Pavoni"]
-  s.email       = ["alessiorocco@nebulab.it"]
-  s.homepage    = "https://github.com/nebulab/cangaroo"
-  s.summary     = "Connect Any App to Any Service"
-  s.description = "Cangaroo helps developers integrating their apps with any service"
-  s.license     = "MIT"
+  s.authors     = ['Alessio Rocco', 'Andrea Pavoni']
+  s.email       = ['alessiorocco@nebulab.it']
+  s.homepage    = 'https://github.com/nebulab/cangaroo'
+  s.summary     = 'Connect Any App to Any Service'
+  s.description = 'Cangaroo helps developers integrating their apps with any service'
+  s.license     = 'MIT'
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["spec/**/*"]
+  s.files = Dir['{app,config,db,lib}/**/*',
+                'MIT-LICENSE',
+                'Rakefile',
+                'README.rdoc']
+  s.test_files = Dir['spec/**/*']
 
   s.add_dependency 'rails', '~> 4.2.4'
   s.add_dependency 'interactor-rails', '~> 2.0'
@@ -29,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-matchers'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'rubocop'
 end

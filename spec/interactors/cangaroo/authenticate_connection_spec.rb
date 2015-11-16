@@ -1,14 +1,18 @@
 require 'rails_helper'
 
 describe Cangaroo::AuthenticateConnection do
-  subject(:context) { Cangaroo::AuthenticateConnection.call(key: 'connection_key', token: 'secret_token') }
+  subject(:context) do
+    Cangaroo::AuthenticateConnection.call(key: 'connection_key',
+                                          token: 'secret_token')
+  end
 
   describe '.call' do
     context 'when given valid credentials' do
       let(:connection) { double(:connection) }
 
       before do
-        allow(Cangaroo::Connection).to receive(:authenticate).with('connection_key', 'secret_token').and_return(connection)
+        allow(Cangaroo::Connection).to receive(:authenticate)
+          .with('connection_key', 'secret_token').and_return(connection)
       end
 
       it 'succeeds' do
@@ -22,7 +26,8 @@ describe Cangaroo::AuthenticateConnection do
 
     context 'when given invalid credentials' do
       before do
-        allow(Cangaroo::Connection).to receive(:authenticate).with('connection_key', 'secret_token').and_return(nil)
+        allow(Cangaroo::Connection).to receive(:authenticate)
+          .with('connection_key', 'secret_token').and_return(nil)
       end
 
       it 'fails' do

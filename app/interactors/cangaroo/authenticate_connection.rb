@@ -2,18 +2,18 @@ module Cangaroo
   class AuthenticateConnection
     include Interactor
 
+    before :prepare_context
+
     def call
-      if connection
-        context.source_connection = connection
-      else
+      context.source_connection ||
         context.fail!(message: 'wrong credentials', error_code: 401)
-      end
     end
 
     private
 
-    def connection
-      @connection ||= Cangaroo::Connection.authenticate(context.key, context.token)
+    def prepare_context
+      context.source_connection =
+        Cangaroo::Connection.authenticate(context.key, context.token)
     end
   end
 end

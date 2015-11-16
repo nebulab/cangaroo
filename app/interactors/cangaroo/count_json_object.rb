@@ -5,9 +5,9 @@ module Cangaroo
     before :prepare_context
 
     def call
-      context.object_count = context.data.inject({}) do |object, (k, v)|
-        object[k] = v.size
-        object
+      context.object_count = context.data.inject({}) do |o, (k, v)|
+        o[k] = v.size
+        o
       end
     end
 

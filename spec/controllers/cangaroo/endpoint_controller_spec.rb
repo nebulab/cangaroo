@@ -41,12 +41,11 @@ module Cangaroo
 
         it 'responds with the number of objects received in payload' do
           res = JSON.parse(response.body)
-          expect(res).to eq({"orders" => 2, "shipments" => 2})
+          expect(res).to eq('orders' => 2, 'shipments' => 2)
         end
       end
 
       context 'when error' do
-
         before do
           request.headers['X-Hub-Access-Token'] = 'wrongtoken'
           post :create, request_payload

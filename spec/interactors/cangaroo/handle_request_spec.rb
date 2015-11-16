@@ -7,10 +7,10 @@ describe Cangaroo::HandleRequest do
     subject { described_class.organized }
 
     let(:interactors) do
-      [ Cangaroo::AuthenticateConnection,
-        Cangaroo::ValidateJsonSchema,
-        Cangaroo::CountJsonObject,
-        Cangaroo::PerformJobs ]
+      [Cangaroo::AuthenticateConnection,
+       Cangaroo::ValidateJsonSchema,
+       Cangaroo::CountJsonObject,
+       Cangaroo::PerformJobs]
     end
 
     it { is_expected.to eql interactors }

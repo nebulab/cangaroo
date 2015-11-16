@@ -14,7 +14,9 @@ describe Cangaroo::ValidateJsonSchema do
 
     context 'when json is not well formatted' do
       describe 'with wrong main key' do
-        let(:json_body) { JSON.parse(load_fixture('json_payload_wrong_key.json')) }
+        let(:json_body) do
+          JSON.parse(load_fixture('json_payload_wrong_key.json'))
+        end
 
         it 'fails' do
           expect(context).to be_a_failure

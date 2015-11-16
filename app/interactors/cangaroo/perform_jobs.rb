@@ -15,9 +15,7 @@ module Cangaroo
     end
 
     def enqueue_jobs(type, payload)
-      initialize_jobs(type, payload).select {|job| job.perform? }.each do |job|
-        job.enqueue
-      end
+      initialize_jobs(type, payload).select(&:perform?).each(&:enqueue)
     end
 
     def initialize_jobs(type, payload)

@@ -1,4 +1,4 @@
-require_dependency "cangaroo/application_controller"
+require_dependency 'cangaroo/application_controller'
 
 module Cangaroo
   class EndpointController < ApplicationController
@@ -26,17 +26,17 @@ module Cangaroo
     end
 
     def ensure_json_request
-      return if request.headers['Accept'] == 'application/json' && request.headers['Content-Type'] == 'application/json'
+      return if request.headers['Accept'] == 'application/json' &&
+                request.headers['Content-Type'] == 'application/json'
       render nothing: true, status: 406
     end
 
     def key
-      request.headers["X-Hub-Store"]
+      request.headers['X-Hub-Store']
     end
 
     def token
-      request.headers["X-Hub-Access-Token"]
+      request.headers['X-Hub-Access-Token']
     end
-
   end
 end

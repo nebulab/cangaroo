@@ -13,21 +13,21 @@ module Cangaroo
       end
 
       def post(payload, request_id, parameters)
-        req = self.class.post(url, {
-          headers: headers,
-          body: body(payload, request_id, parameters).to_json
-        })
+        request_body = body(payload, request_id, parameters).to_json
+        req = self.class.post(url, headers: headers, body: request_body)
         if req.response.code == '200'
           req.parsed_response
         else
-          raise Cangaroo::Webhook::Error, req.parsed_response['summary']
+          fail Cangaroo::Webhook::Error, req.parsed_response['summary']
         end
       end
 
       private
 
       def url
-        URI.parse(HTTParty.normalize_base_uri(connection.url)).merge(self.path.to_s).to_s
+        URI.parse(
+          HTTParty.normalize_base_uri(connection.url)
+        ).merge(path.to_s).to_s
       end
 
       def headers

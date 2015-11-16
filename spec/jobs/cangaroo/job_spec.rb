@@ -2,11 +2,10 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe Job, type: :job do
-
     class FakeJob < Cangaroo::Job
       connection :store
       path '/webhook_path'
-      parameters({ email: 'info@nebulab.it' })
+      parameters(email: 'info@nebulab.it')
     end
 
     let(:job_class) { FakeJob }
@@ -14,13 +13,15 @@ module Cangaroo
     let(:type) { 'orders' }
     let(:payload) { { id: 'O123' } }
 
-    let(:options) {
+    let(:options) do
       { connection: source_connection,
         type: type,
         payload: payload }
-    }
+    end
 
-    let(:client) { Cangaroo::Webhook::Client.new(source_connection, '/webhook_path') }
+    let(:client) do
+      Cangaroo::Webhook::Client.new(source_connection, '/webhook_path')
+    end
 
     before do
       client.stub(:post)
@@ -29,7 +30,7 @@ module Cangaroo
 
     describe '#perform' do
       it 'instantiates a Cangaroo::Webhook::Client' do
-        expect( Cangaroo::Webhook::Client ).to receive(:new)
+        expect(Cangaroo::Webhook::Client).to receive(:new)
           .with(source_connection, '/webhook_path')
           .and_return(client)
         FakeJob.perform_now(options)
@@ -38,16 +39,17 @@ module Cangaroo
       it 'calls post on client' do
         job = job_class.new(options)
         job.perform
-        expect(client).to have_received(:post).with(job.transform, job.job_id, { email: 'info@nebulab.it' })
+        expect(client).to have_received(:post)
+          .with(job.transform, job.job_id, email: 'info@nebulab.it')
       end
     end
 
     describe '#perform?' do
-      it { expect{job_class.new(options).perform?}.to raise_error(NotImplementedError) }
+      it { expect { job_class.new(options).perform? }.to raise_error(NotImplementedError) }
     end
 
     describe '#transform' do
-      it { expect(job_class.new(options).transform).to eq({ "order" => payload }) }
+      it { expect(job_class.new(options).transform).to eq('order' => payload) }
     end
   end
 end

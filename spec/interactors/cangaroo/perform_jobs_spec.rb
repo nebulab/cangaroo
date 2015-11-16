@@ -4,10 +4,13 @@ class JobA < Cangaroo::Job; end
 class JobB < Cangaroo::Job; end
 
 describe Cangaroo::PerformJobs do
+  subject(:context) do
+    Cangaroo::PerformJobs.call(json_body: json_body,
+                               jobs: [JobA, JobB],
+                               source_connection: connection)
+  end
 
-  subject(:context) { Cangaroo::PerformJobs.call(json_body: json_body,
-                                                 jobs: [ JobA, JobB ],
-                                                 source_connection: create(:cangaroo_connection)) }
+  let(:connection) { create(:cangaroo_connection) }
 
   before do
     allow(JobA).to receive(:new).with(any_args).and_return(job_a)
