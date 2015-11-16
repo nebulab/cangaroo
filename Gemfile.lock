@@ -3,9 +3,9 @@ PATH
   specs:
     cangaroo (0.0.1)
       httparty (~> 0.13.7)
+      interactor-rails (~> 2.0)
       json-schema (~> 2.5.1)
       rails (~> 4.2.4)
-      simple_command (~> 0.0.9)
 
 GEM
   remote: https://rubygems.org/
@@ -65,6 +65,10 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    interactor (3.1.0)
+    interactor-rails (2.0.1)
+      interactor (~> 3.0)
+      rails (>= 3, < 5)
     json (1.8.3)
     json-schema (2.5.1)
       addressable (~> 2.3.7)
@@ -127,7 +131,6 @@ GEM
     safe_yaml (1.0.4)
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
-    simple_command (0.0.9)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)

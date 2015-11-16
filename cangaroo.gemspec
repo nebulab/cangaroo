@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency 'rails', '~> 4.2.4'
-  s.add_dependency 'simple_command', '~> 0.0.9'
+  s.add_dependency 'interactor-rails', '~> 2.0'
   s.add_dependency 'json-schema', '~> 2.5.1'
   s.add_dependency 'httparty', '~> 0.13.7'
 
