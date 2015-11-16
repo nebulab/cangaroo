@@ -53,7 +53,7 @@ module Cangaroo
         end
 
         it 'responds with 500' do
-          expect(response.status).to eq(500)
+          expect(response.status).to eq(401)
         end
 
         it 'responds with error messages in the body' do

@@ -7,16 +7,22 @@ module Cangaroo
 
     def create
       if @command.success?
-        render json: @command.result
+        render json: @command.object_count
       else
-        render json: { error: @command.errors[:error].first }, status: 500
+        render json: { error: @command.message },
+               status: @command.error_code
       end
     end
 
     private
 
     def handle_request
-      @command = HandleRequest.call params[:endpoint].to_json, key, token
+      @command = HandleRequest.call(
+        key: key,
+        token: token,
+        json_body: params[:endpoint].to_json,
+        jobs: Rails.configuration.cangaroo.jobs
+      )
     end
 
     def ensure_json_request
