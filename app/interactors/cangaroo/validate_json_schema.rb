@@ -1,6 +1,6 @@
 module Cangaroo
   class ValidateJsonSchema
-    prepend SimpleCommand
+    include Interactor
 
     SCHEMA = {
       "type": "object",
@@ -23,17 +23,10 @@ module Cangaroo
       }
     }.freeze
 
-    def initialize(json_body)
-      @json_body = json_body
-    end
-
     def call
-      json_errors = JSON::Validator.fully_validate(SCHEMA, @json_body)
-      unless json_errors.empty?
-        json_errors.each { |err| errors.add(:error, err) }
-        return false
+      unless JSON::Validator.fully_validate(SCHEMA, context.json_body).empty?
+        context.fail!(message: 'wrong json schema', error_code: 500)
       end
-      true
     end
   end
 end
