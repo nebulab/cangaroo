@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030171657) do
+ActiveRecord::Schema.define(version: 20151030140821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,16 +26,4 @@ ActiveRecord::Schema.define(version: 20151030171657) do
     t.text     "parameters"
   end
 
-  create_table "cangaroo_items", force: :cascade do |t|
-    t.string   "item_type"
-    t.string   "item_id"
-    t.json     "payload"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "cangaroo_connection_id"
-  end
-
-  add_index "cangaroo_items", ["cangaroo_connection_id"], name: "index_cangaroo_items_on_cangaroo_connection_id", using: :btree
-
-  add_foreign_key "cangaroo_items", "cangaroo_connections"
 end
