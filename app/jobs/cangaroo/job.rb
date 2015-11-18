@@ -17,15 +17,6 @@ module Cangaroo
       end
     end
 
-    attr_accessor :source_connection, :type, :payload
-
-    def initialize(arguments)
-      @source_connection = arguments.fetch(:connection)
-      @type = arguments.fetch(:type)
-      @payload = arguments.fetch(:payload)
-      super
-    end
-
     def perform(*)
       Cangaroo::Webhook::Client.new(destination_connection, path)
         .post(transform, @job_id, parameters)
@@ -40,6 +31,18 @@ module Cangaroo
     end
 
     private
+
+    def source_connection
+      arguments.first.fetch(:connection)
+    end
+
+    def type
+      arguments.first.fetch(:type)
+    end
+
+    def payload
+      arguments.first.fetch(:payload)
+    end
 
     def destination_connection
       @connection ||= Cangaroo::Connection.find_by!(name: connection_name)
