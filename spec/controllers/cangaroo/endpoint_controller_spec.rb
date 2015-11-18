@@ -7,7 +7,6 @@ module Cangaroo
     let(:request_payload) { JSON.parse(load_fixture('json_payload_ok.json')) }
 
     before do
-      request.headers['Accept'] = 'application/json'
       request.headers['Content-Type'] = 'application/json'
       request.headers['X-Hub-Store'] = connection.key
       request.headers['X-Hub-Access-Token'] = connection.token
@@ -19,15 +18,9 @@ module Cangaroo
       end
 
       it 'accepts only application/json requests' do
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(202)
 
-        request.headers['Content-Type'] = 'application/json'
-        request.headers['Accept'] = 'text/html'
-        post :create
-        expect(response.status).to eq(406)
-
-        request.headers['Content-Type'] = 'text/html'
-        request.headers['Accept'] = 'application/json'
+        request.headers['Content-Type'] = 'application/text'
         post :create
         expect(response.status).to eq(406)
       end
@@ -36,7 +29,7 @@ module Cangaroo
         let(:auth_headers) {}
 
         it 'responds with 200' do
-          expect(response.status).to eq(200)
+          expect(response.status).to eq(202)
         end
 
         it 'responds with the number of objects received in payload' do

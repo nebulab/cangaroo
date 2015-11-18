@@ -7,7 +7,7 @@ module Cangaroo
 
     def create
       if @command.success?
-        render json: @command.object_count
+        render json: @command.object_count, status: 202
       else
         render json: { error: @command.message },
                status: @command.error_code
@@ -26,8 +26,7 @@ module Cangaroo
     end
 
     def ensure_json_request
-      return if request.headers['Accept'] == 'application/json' &&
-                request.headers['Content-Type'] == 'application/json'
+      return if request.headers['Content-Type'] == 'application/json'
       render nothing: true, status: 406
     end
 
