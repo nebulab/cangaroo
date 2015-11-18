@@ -31,7 +31,7 @@ module Cangaroo
       end
 
       def headers
-        { 'X-Hub-Store' => connection.key, 'X-Hub-Token' => connection.token }
+        { 'X_HUB_TOKEN' => connection.token }
       end
 
       def body(payload, request_id, parameters)

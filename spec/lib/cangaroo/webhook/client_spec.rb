@@ -29,8 +29,7 @@ module Cangaroo
           expect(WebMock).to have_requested(:post,
                                             'http://www.store.com/api_path')
             .with(
-              headers: { 'X-Hub-Store': connection.key,
-                         'X-Hub-Token': connection.token },
+              headers: { 'X_HUB_TOKEN': connection.token },
               body: {
                 request_id: request_id,
                 parameters: connection.parameters.deep_merge(parameters),
