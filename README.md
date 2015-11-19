@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/nebulab/cangaroo/badges/gpa.svg)](https://codeclimate.com/github/nebulab/cangaroo)
+
 # Cangaroo
 
 Cangaroo helps developers integrating their apps with any service.
