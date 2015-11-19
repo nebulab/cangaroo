@@ -1,5 +1,6 @@
 [![Code Climate](https://codeclimate.com/github/nebulab/cangaroo/badges/gpa.svg)](https://codeclimate.com/github/nebulab/cangaroo)
 [![Test Coverage](https://codeclimate.com/github/nebulab/cangaroo/badges/coverage.svg)](https://codeclimate.com/github/nebulab/cangaroo/coverage)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nebulab/cangaroo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Cangaroo
 
