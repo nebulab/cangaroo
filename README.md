@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/nebulab/cangaroo/badges/gpa.svg)](https://codeclimate.com/github/nebulab/cangaroo)
+[![Test Coverage](https://codeclimate.com/github/nebulab/cangaroo/badges/coverage.svg)](https://codeclimate.com/github/nebulab/cangaroo/coverage)
 
 # Cangaroo
 
