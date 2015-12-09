@@ -5,6 +5,8 @@ module Cangaroo
     before_action :ensure_json_request
     before_action :handle_request
 
+    rescue_from Exception, with: :handle_error
+
     def create
       if @command.success?
         render json: @command.object_count, status: 202
@@ -15,6 +17,12 @@ module Cangaroo
     end
 
     private
+
+    def handle_error
+      unless Rails.env.development?
+        render json: { error: 'Something went wrong!' }, status: 500
+      end
+    end
 
     def handle_request
       @command = HandleRequest.call(

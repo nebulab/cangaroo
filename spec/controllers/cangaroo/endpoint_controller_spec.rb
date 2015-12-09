@@ -44,12 +44,27 @@ module Cangaroo
           post :create, request_payload
         end
 
-        it 'responds with 500' do
+        it 'responds with the command error code' do
           expect(response.status).to eq(401)
         end
 
         it 'responds with error messages in the body' do
           expect(JSON.parse(response.body)['error']).to be_present
+        end
+      end
+
+      context 'when an exception was raised' do
+        before do
+          HandleRequest.stub(:call).and_raise('An error')
+          post :create, request_payload
+        end
+
+        it 'responds with 500' do
+          expect(response.status).to eq(500)
+        end
+
+        it 'responds with error messages in the body' do
+          expect(JSON.parse(response.body)['error']).to eq 'Something went wrong!'
         end
       end
     end
