@@ -9,7 +9,7 @@ Cangaroo helps developers integrating their apps with any service.
 
 ## The whole story
 
-Some time ago Spree decided to shout down Wombat and to release its closed
+Some time ago Spree decided to shut down Wombat and to release its closed
 source code to customers only, so we had to decide how to continue, installing
 Wombat by ourselves for some of our clients or starting a new open source
 project with an API compliant with Wombat's.
