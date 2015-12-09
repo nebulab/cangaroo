@@ -43,21 +43,15 @@ Cangaroo is a Rails Engine so as usual you can install it using
 
 And then executing:
 
-```ruby
-  $ bundle
-```
+    $ bundle
 
 Install the needed migration with:
 
-```ruby
-  $ bin/rake cangaroo:install:migrations
-```
+    $ bin/rake cangaroo:install:migrations
 
 And then executing:
 
-```ruby
-  $ bin/rake db:migrate
-```
+    $ bin/rake db:migrate
 
 Now mount the engine into your `routes.rb` file:
 
