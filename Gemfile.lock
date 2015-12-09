@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cangaroo (0.0.1)
+    cangaroo (1.0.0)
       httparty (~> 0.13.7)
       interactor-rails (~> 2.0)
       json-schema (~> 2.5.1)
@@ -177,3 +177,6 @@ DEPENDENCIES
   shoulda-matchers
   simplecov
   webmock
+
+BUNDLED WITH
+   1.10.6
