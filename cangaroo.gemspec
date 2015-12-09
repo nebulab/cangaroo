@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = 'cangaroo'
   s.version     = Cangaroo::VERSION
   s.authors     = ['Alessio Rocco', 'Andrea Pavoni']
-  s.email       = ['alessiorocco@nebulab.it']
+  s.email       = ['info@nebulab.it']
   s.homepage    = 'https://github.com/nebulab/cangaroo'
   s.summary     = 'Connect Any App to Any Service'
   s.description = 'Cangaroo helps developers integrating their apps with any service'
