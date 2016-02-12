@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/cangaroo.svg)](https://badge.fury.io/rb/cangaroo)
 [![Code Climate](https://codeclimate.com/github/nebulab/cangaroo/badges/gpa.svg)](https://codeclimate.com/github/nebulab/cangaroo)
 [![BuildStatus](https://travis-ci.org/nebulab/cangaroo.svg?branch=master)](https://travis-ci.org/nebulab/cangaroo)
 [![Test Coverage](https://codeclimate.com/github/nebulab/cangaroo/badges/coverage.svg)](https://codeclimate.com/github/nebulab/cangaroo/coverage)
