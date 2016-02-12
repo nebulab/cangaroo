@@ -7,13 +7,12 @@
 # Cangaroo
 
 Cangaroo helps developers integrating their apps with any service.
-It is a Rails Engine that can be installed on any Rails application.
-It is used as a connection hub from one or multiple applications and external
-services.
+It is a Rails Engine that can be installed on any Rails application and is used
+as a connection hub from one or multiple applications and external services.
 
 [TODO] add self-explanatory image here.
 
-#### Why use Cangaroo?
+#### When/Why you should use Cangaroo?
 
 Cangaroo allows to move the logic related to external services connection and
 syncronization between multiple applications.
