@@ -1,5 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/nebulab/cangaroo/badges/gpa.svg)](https://codeclimate.com/github/nebulab/cangaroo)
-[![Codeship Status for nebulab/cangaroo](https://codeship.com/projects/aed26ab0-b3a0-0133-57ba-1a30591bad79/status?branch=master)](https://codeship.com/projects/133746)
+[![BuildStatus](https://travis-ci.org/nebulab/cangaroo.svg?branch=master)](https://travis-ci.org/nebulab/cangaroo)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nebulab/cangaroo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Cangaroo
