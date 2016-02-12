@@ -7,23 +7,66 @@
 # Cangaroo
 
 Cangaroo helps developers integrating their apps with any service.
+It is a Rails Engine that can be installed on any Rails application.
+It is used as a connection hub from one or multiple applications and external
+services.
+
+[TODO] add self-explanatory image here.
+
+#### Why use Cangaroo?
+
+Cangaroo allows to move the logic related to external services connection and
+syncronization between multiple applications.
+
+This logic will reside in a shared area without the need to replicate it for
+any system component. It's especially useful when working with larger
+system formed by multiple applications that need to send messages to each other
+and to external services.
+
+This kind of configuration allows:
+- don't overload your application resources allowing to scale the number
+or requests that can be handled;
+- in case of errors or downtimes of any system component, Cangaroo stores each
+message and retry sending it until it's successfully delivered;
+- use and contribute to a lot of integrations that has already be done by the
+community.
+
+
+#### Integrations
+
+Cangaroo integrations are pieces of code that allow interacting with external
+services via API.
+
+An usual flow is:
+
+1. Cangaroo receive some data from an application;
+2. Data is send to one or more integrations;
+3. Integrations convert data to be compatible with an external service API;
+4. Integrations send converted data to the external service.
+
+Cangaroo is born with built-in Wombat extensions compatibility, so you can use
+any extensions that you can find [here](https://github.com/wombat).
 
 ## The whole story
 
 Some time ago Spree decided to shut down Wombat and to release its closed
-source code to customers only, so we had to decide how to continue, installing
-Wombat by ourselves for some of our clients or starting a new open source
-project with an API compliant with Wombat's.
+source code to customers only, so we had to decide how to go ahead, and the
+alternative were:
 
-We believe in open source so we chose the latter and this project was born.
-The idea is a little different from Wombat, the goal of this project is to
+1. hosting Wombat by ourselves for some of our clients
+2. starting a new open source project with an API compliant with Wombat.
+
+We believe in open source so we chose the latter.
+
+The idea is a bit different from Wombat, the goal of this project is to
 provide a backwards compatible API and give the developers the freedom to change
-it and customize it.
+and customize it.
 
-For the first release we won't have an admin interface because we believe
-developers prefer code and the Rails console.
+At least for the first release we won't have an admin interface, we believe
+developers prefer code and using Rails console directly.
+
 We hope this project can help to make the migration from Wombat easier and we
-believe the Spree community will help to make it better.
+believe the Spree/Solidus community will help to make it better.
 
 ## Dependencies
 
@@ -32,14 +75,12 @@ believe the Spree community will help to make it better.
 
 ## Installation
 
-Cangaroo is a Rails Engine so as usual you can install it using
+Cangaroo is a Rails Engine so as usual you can install it by using
 [Bundler](http://bundler.io) by adding it to your application's Gemfile:
 
 ```ruby
   # Gemfile
-  ...
   gem 'cangaroo'
-  ...
 ```
 
 And then executing:
@@ -102,7 +143,7 @@ and add this job to the `Rails.configuration.cangaroo.jobs`:
 
 ## How it works
 
-Cangaroo provides a Push API where you can send your data, after the data has
+Cangaroo provides a Push API where you can send your data. After data has
 been received, Cangaroo sends data to integrations and webhooks based on your
 business logic.
 
@@ -110,11 +151,11 @@ This is the detailed flow:
 
   - Cangaroo receives the data
   - If some error like "wrong key and token" or "malformed json" is raised
-    Cangaroo returns an HTTP status code based on the kind of error:
-    - 406 for wrong request
-    - 401 for Unauthorized
-    - 500 for wrong json schema
-    - 500 for Cangaroo internal errors
+    Cangaroo returns an HTTP status code based on the error type:
+    - `406` for wrong request
+    - `401` for Unauthorized
+    - `500` for wrong json schema
+    - `500` for Cangaroo internal errors
   - If there are no errors, for each object in the json body, Cangaroo checks
     what jobs must be enqueued by calling the `#perform?` method. Each job
     returning `true` to `#perform?` will be enqueued.
@@ -297,13 +338,13 @@ The following is an example of a `Cangaroo::Job`:
 ```
 
 Suppose that the `mystore` connection has a `url` set to "http://mystore.com"
-an the `payload` is like this:
+an the `payload` is something like:
 
 ```ruby
   { "id": "S123", "status": "shipped" }
 ```
 
-it will do a `POST` request to `http://mystore.com/update_shipment` with
+It will do a `POST` request to `http://mystore.com/update_shipment` with
 this json body:
 
 ```json
