@@ -10,3 +10,6 @@ branches:
 rvm:
   - 2.3.0
   - 2.2.0
+addons:
+  code_climate:
+    repo_token: 7e49a138186c8d4d5eb6632586252a17f794ebeb765e013bc8363c4efffd34c5
