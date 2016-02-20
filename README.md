@@ -162,7 +162,7 @@ This is the detailed flow:
 ## Push API
 
 Cangaroo has just a single endpoint where you can push your data, based on
-where `Cangaroo::Engine` is mounted, it will be reachable under the `/enpoint`
+where `Cangaroo::Engine` is mounted, it will be reachable under the `/endpoint`
 path. For example, if the `Cangaroo::Engine` is mounted under `/cangaroo` the
 Push API path will be `/cangaroo/endpoint`.
 
