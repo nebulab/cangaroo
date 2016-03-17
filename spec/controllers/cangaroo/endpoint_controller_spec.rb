@@ -20,7 +20,7 @@ module Cangaroo
       it 'accepts only application/json requests' do
         expect(response.status).to eq(202)
 
-        request.headers['Content-Type'] = 'application/text'
+        request.headers['Content-Type'] = 'text/html'
         post :create
         expect(response.status).to eq(406)
       end
