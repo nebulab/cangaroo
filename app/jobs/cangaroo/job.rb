@@ -30,7 +30,7 @@ module Cangaroo
       { type.singularize => payload }
     end
 
-    private
+    protected
 
     def source_connection
       arguments.first.fetch(:connection)
