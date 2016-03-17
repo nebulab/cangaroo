@@ -2,8 +2,8 @@ module Cangaroo
   class Connection < ActiveRecord::Base
     serialize :parameters
 
-    validates :name, :url, :key, :token, presence: true
-    validates :name, :url, :key, :token, uniqueness: true
+    validates :name, :url, :key, presence: true, uniqueness: true
+    validates :token, presence: true, uniqueness: true, if: -> { !Rails.configuration.cangaroo.basic_auth }
 
     after_initialize :set_default_parameters
 
