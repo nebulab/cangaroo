@@ -255,6 +255,10 @@ Each connection must have these fields:
     (used to check the request's 'X-Hub-Store' header)
   * token - (required, String) It's used for authentication
     (used to check the request's 'X-Hub-Access-Token' header)
+  * basic_auth - (optional, Boolean) Defaults to false. If you would like to
+    use HTTP basic auth in your integration instead of Wombat's key + token.
+    Basic auth is handled [Stripe-style](https://www.quora.com/Why-does-Stripe-use-HTTP-Basic-Auth-with-a-token-instead-of-a-header),
+    without a username using `key` as your password. 
   * parameters - (optional, Hash) Used as parameters when Cangaroo makes a
     request to this connection
 
