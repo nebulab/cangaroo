@@ -8,9 +8,7 @@ describe Cangaroo::HandleRequest do
 
     let(:interactors) do
       [Cangaroo::AuthenticateConnection,
-       Cangaroo::ValidateJsonSchema,
-       Cangaroo::CountJsonObject,
-       Cangaroo::PerformJobs]
+       Cangaroo::PerformFlow]
     end
 
     it { is_expected.to eql interactors }
