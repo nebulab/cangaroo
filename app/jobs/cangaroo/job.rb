@@ -18,14 +18,7 @@ module Cangaroo
     end
 
     def perform(*)
-      response = Cangaroo::Webhook::Client.new(destination_connection, path)
-        .post(transform, @job_id, parameters)
-
-      PerformFlow.call(
-        source_connection: destination_connection,
-        json_body: response.to_json,
-        jobs: Rails.configuration.cangaroo.jobs
-      )
+      restart_flow(connection_request)
     end
 
     def perform?
@@ -37,6 +30,19 @@ module Cangaroo
     end
 
     protected
+
+    def connection_request
+      Cangaroo::Webhook::Client.new(destination_connection, path)
+        .post(transform, @job_id, parameters)
+    end
+
+    def restart_flow(response)
+      PerformFlow.call(
+        source_connection: destination_connection,
+        json_body: response.to_json,
+        jobs: Rails.configuration.cangaroo.jobs
+      )
+    end
 
     def source_connection
       arguments.first.fetch(:connection)
