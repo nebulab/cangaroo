@@ -5,7 +5,15 @@ describe Cangaroo::ValidateJsonSchema do
 
   describe '.call' do
     context 'when json is well formatted' do
-      let(:json_body) { JSON.parse(load_fixture('json_payload_ok.json')) }
+      let(:json_body) { parse_fixture('json_payload_ok.json') }
+
+      it 'succeeds' do
+        expect(context).to be_a_success
+      end
+    end
+
+    context 'when json is well formatted and come from a connection' do
+      let(:json_body) { parse_fixture('json_payload_connection_response.json') }
 
       it 'succeeds' do
         expect(context).to be_a_success
@@ -14,9 +22,7 @@ describe Cangaroo::ValidateJsonSchema do
 
     context 'when json is not well formatted' do
       describe 'with wrong main key' do
-        let(:json_body) do
-          JSON.parse(load_fixture('json_payload_wrong_key.json'))
-        end
+        let(:json_body) { parse_fixture('json_payload_wrong_key.json') }
 
         it 'fails' do
           expect(context).to be_a_failure
@@ -32,7 +38,7 @@ describe Cangaroo::ValidateJsonSchema do
       end
 
       describe 'without an object id' do
-        let(:json_body) { JSON.parse(load_fixture('json_payload_no_id.json')) }
+        let(:json_body) { parse_fixture('json_payload_no_id.json') }
 
         it 'fails' do
           expect(context).to be_a_failure

@@ -23,9 +23,18 @@ module Cangaroo
       }
     }.freeze
 
+    before :prepare_context
+
     def call
       JSON::Validator.fully_validate(SCHEMA, context.json_body).empty? ||
         context.fail!(message: 'wrong json schema', error_code: 500)
+    end
+
+    private
+
+    def prepare_context
+      context.request_id = context.json_body.delete('request_id')
+      context.summary = context.json_body.delete('summary')
     end
   end
 end
