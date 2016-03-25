@@ -31,7 +31,11 @@ module Cangaroo
       end
 
       def headers
-        { 'X_HUB_TOKEN' => connection.token }
+        {
+          'X_HUB_TOKEN' => connection.token,
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
+        }
       end
 
       def body(payload, request_id, parameters)
