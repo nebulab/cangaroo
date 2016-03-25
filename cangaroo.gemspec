@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
                 'Rakefile',
                 'README.rdoc']
   s.test_files = Dir['spec/**/*']
+  s.required_ruby_version = '>= 2.2.0'
 
   s.add_dependency 'rails', '~> 4.2.4'
   s.add_dependency 'interactor-rails', '~> 2.0'
