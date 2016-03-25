@@ -18,8 +18,14 @@ module Cangaroo
     end
 
     def perform(*)
-      Cangaroo::Webhook::Client.new(destination_connection, path)
+      response = Cangaroo::Webhook::Client.new(destination_connection, path)
         .post(transform, @job_id, parameters)
+
+      PerformFlow.call(
+        source_connection: destination_connection,
+        json_body: response.to_json,
+        jobs: Rails.configuration.cangaroo.jobs
+      )
     end
 
     def perform?

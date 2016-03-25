@@ -9,38 +9,49 @@ module Cangaroo
     end
 
     let(:job_class) { FakeJob }
-    let(:source_connection) { create(:cangaroo_connection) }
+    let(:destination_connection) { create(:cangaroo_connection) }
     let(:type) { 'orders' }
     let(:payload) { { id: 'O123' } }
+    let(:connection_response) { { items: { id: '123'} } }
 
     let(:options) do
-      { connection: source_connection,
+      { connection: destination_connection,
         type: type,
         payload: payload }
     end
 
     let(:client) do
-      Cangaroo::Webhook::Client.new(source_connection, '/webhook_path')
+      Cangaroo::Webhook::Client.new(destination_connection, '/webhook_path')
     end
 
     before do
-      client.stub(:post)
+      client.stub(:post).and_return(connection_response)
       allow(Cangaroo::Webhook::Client).to receive(:new).and_return(client)
+      allow(Cangaroo::PerformFlow).to receive(:call)
     end
 
     describe '#perform' do
+      let(:job) { job_class.new(options) }
+
       it 'instantiates a Cangaroo::Webhook::Client' do
         expect(Cangaroo::Webhook::Client).to receive(:new)
-          .with(source_connection, '/webhook_path')
+          .with(destination_connection, '/webhook_path')
           .and_return(client)
-        FakeJob.perform_now(options)
+        job_class.perform_now(options)
       end
 
       it 'calls post on client' do
-        job = job_class.new(options)
         job.perform
         expect(client).to have_received(:post)
           .with(job.transform, job.job_id, email: 'info@nebulab.it')
+      end
+
+      it 'restart the flow' do
+        job.perform
+        expect(Cangaroo::PerformFlow).to have_received(:call)
+          .with(source_connection: destination_connection,
+                json_body: connection_response.to_json,
+                jobs: Rails.configuration.cangaroo.jobs)
       end
     end
 
