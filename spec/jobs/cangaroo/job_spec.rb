@@ -12,7 +12,7 @@ module Cangaroo
     let(:destination_connection) { create(:cangaroo_connection) }
     let(:type) { 'orders' }
     let(:payload) { { id: 'O123' } }
-    let(:connection_response) { { items: { id: '123'} } }
+    let(:connection_response) { parse_fixture('json_payload_connection_response.json') }
 
     let(:options) do
       { connection: destination_connection,
