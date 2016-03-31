@@ -20,7 +20,7 @@ module Cangaroo
         elsif req.response.code == '203'
           ''
         else
-          fail Cangaroo::Webhook::Error, req.parsed_response['summary']
+          fail Cangaroo::Webhook::Error, (req.parsed_response['summary'] rescue req.response)
         end
       end
 
