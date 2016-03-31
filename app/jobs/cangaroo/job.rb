@@ -37,6 +37,9 @@ module Cangaroo
     end
 
     def restart_flow(response)
+      # if no json was returned, the response should be discarded
+      return if response.blank?
+
       PerformFlow.call(
         source_connection: destination_connection,
         json_body: response.to_json,
