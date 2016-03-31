@@ -49,9 +49,20 @@ module Cangaroo
       it 'restart the flow' do
         job.perform
         expect(Cangaroo::PerformFlow).to have_received(:call)
+          .once
           .with(source_connection: destination_connection,
                 json_body: connection_response.to_json,
                 jobs: Rails.configuration.cangaroo.jobs)
+      end
+
+      context 'endpoint provides a empty response' do
+        it 'should not restart the flow' do
+          client.stub(:post).and_return('')
+
+          job.perform
+
+          expect(Cangaroo::PerformFlow).to_not have_received(:call)
+        end
       end
     end
 
