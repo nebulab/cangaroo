@@ -3,6 +3,7 @@ module Cangaroo
     include Interactor
 
     SCHEMA = {
+      'id': 'Cangaroo Object',
       'type': 'object',
       'minProperties': 1,
       'additionalProperties': false,
@@ -26,8 +27,13 @@ module Cangaroo
     before :prepare_context
 
     def call
-      JSON::Validator.fully_validate(SCHEMA, context.json_body).empty? ||
-        context.fail!(message: 'wrong json schema', error_code: 500)
+      validation_response = JSON::Validator.fully_validate(SCHEMA, context.json_body)
+
+      if validation_response.empty?
+        return true
+      end
+
+      context.fail!(message: validation_response.join(', '), error_code: 500)
     end
 
     private
