@@ -17,6 +17,8 @@ module Cangaroo
         req = self.class.post(url, headers: headers, body: request_body)
         if req.response.code == '200'
           req.parsed_response
+        elsif req.response.code == '203'
+          ''
         else
           fail Cangaroo::Webhook::Error, req.parsed_response['summary']
         end
