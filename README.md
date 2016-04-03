@@ -15,7 +15,7 @@ as a connection hub from one or multiple applications and external services.
 #### When/Why you should use Cangaroo?
 
 Cangaroo allows to move the logic related to external services connection and
-syncronization between multiple applications.
+synchronization between multiple applications.
 
 This logic will reside in a shared area without the need to replicate it for
 any system component. It's especially useful when working with larger
@@ -360,3 +360,7 @@ this json body:
 ```
 
 This project rocks and uses MIT-LICENSE.
+
+## Tests
+
+Tests are written using rspec. `bundle exec rake` will run the test suite. If you create an additional migration, you'll need to `rm -Rf spec/dummy` to ensure the test database schema contains your latest changes.
