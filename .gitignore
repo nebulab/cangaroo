@@ -4,3 +4,4 @@ pkg/
 spec/dummy/
 coverage/
 vendor/bundle
+Gemfile.lock
