@@ -37,6 +37,21 @@ module Cangaroo
               }.to_json)
         end
 
+        context 'when basic auth is enabled' do
+          before { Rails.configuration.cangaroo.basic_auth = true }
+
+          it 'sends key and token as basic auth username and password' do
+            expect(client.class).to receive(:post)
+              .with(anything, hash_including(basic_auth: {
+                username: connection.key,
+                password: connection.token }
+              ))
+              .and_return(double(response: double(code: '200'), parsed_response: response))
+
+            client.post(payload, request_id, parameters)
+          end
+        end
+
         context 'when response code is 200 (success)' do
           it 'returns the parsed response' do
             expect(client.post(payload, request_id, parameters))

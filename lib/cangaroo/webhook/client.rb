@@ -14,7 +14,23 @@ module Cangaroo
 
       def post(payload, request_id, parameters)
         request_body = body(payload, request_id, parameters).to_json
-        req = self.class.post(url, headers: headers, body: request_body)
+
+        request_options = {
+          headers: headers,
+          body: request_body
+        }
+
+        if Rails.configuration.cangaroo.basic_auth
+          request_options.merge!(
+            basic_auth: {
+              username: connection.key,
+              password: connection.token
+            }
+          )
+        end
+
+        req = self.class.post(url, request_options)
+
         if req.response.code == '200'
           req.parsed_response
         elsif req.response.code == '203'
@@ -34,7 +50,7 @@ module Cangaroo
 
       def headers
         {
-          'X_HUB_TOKEN' => connection.token,
+          'X_HUB_TOKEN' => connection.token || '',
           'Content-Type' => 'application/json',
           'Accept' => 'application/json'
         }

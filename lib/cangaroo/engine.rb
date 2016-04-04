@@ -12,6 +12,7 @@ module Cangaroo
     config.before_configuration do
       Rails.configuration.cangaroo = ActiveSupport::OrderedOptions.new
       Rails.configuration.cangaroo.jobs = []
+      Rails.configuration.cangaroo.basic_auth = false
     end
   end
 end
