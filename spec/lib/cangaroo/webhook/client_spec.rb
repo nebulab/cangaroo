@@ -59,9 +59,9 @@ module Cangaroo
           end
         end
 
-        context 'when response code is 203 (no content)' do
+        context 'when response code is 204 (no content)' do
           it 'returns an empty string' do
-            stub_request(:post, /^#{url}.*/).to_return(status: 203, body: '')
+            stub_request(:post, /^#{url}.*/).to_return(status: 204, body: '')
 
             expect(client.post(payload, request_id, parameters)).to eq('')
           end
