@@ -69,6 +69,12 @@ RSpec.configure do |config|
     end
   end
 
+  # reset config before each spec
+  config.before(:each) do
+    Rails.configuration.cangaroo.basic_auth = false
+    Rails.configuration.cangaroo.jobs = []
+  end
+
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
