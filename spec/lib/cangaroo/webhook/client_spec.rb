@@ -86,6 +86,21 @@ module Cangaroo
               .to raise_error(Cangaroo::Webhook::Error)
           end
         end
+
+        context 'when response code is not 200 and response is not json' do
+          let(:failure_response) { 'i am not json' }
+
+          before do
+            stub_request(:post, /^#{url}.*/).to_return(
+              body: failure_response,
+              status: 500)
+          end
+
+          it 'raises Cangaroo::Webhook::Error' do
+            expect { client.post(payload, request_id, parameters) }
+              .to raise_error(Cangaroo::Webhook::Error)
+          end
+        end
       end
     end
   end
