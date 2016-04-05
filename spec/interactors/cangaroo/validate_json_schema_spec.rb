@@ -12,6 +12,14 @@ describe Cangaroo::ValidateJsonSchema do
       end
     end
 
+    context 'when json is well formatted and empty' do
+      let(:json_body) { parse_fixture('json_payload_empty.json') }
+
+      it 'succeeds' do
+        expect(context).to be_a_success
+      end
+    end
+
     context 'when json is well formatted and come from a connection' do
       let(:json_body) { parse_fixture('json_payload_connection_response.json') }
 
