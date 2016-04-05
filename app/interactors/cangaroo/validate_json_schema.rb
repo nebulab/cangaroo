@@ -10,7 +10,6 @@ module Cangaroo
       'patternProperties': {
         '^[a-z]*$': {
           'type': 'array',
-          'minItems': 1,
           'items': {
             'type': 'object',
             'required': ['id'],
