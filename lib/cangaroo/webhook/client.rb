@@ -31,12 +31,12 @@ module Cangaroo
 
         req = self.class.post(url, request_options)
 
-        if req.response.code == '200'
-          req.parsed_response
-        elsif req.response.code == '204'
-          ''
+        sanitized_response = sanitize_response(req)
+
+        if %w(200 201 202 204).include?(req.response.code)
+          sanitized_response
         else
-          fail Cangaroo::Webhook::Error, (req.parsed_response['summary'] rescue req.response)
+          fail Cangaroo::Webhook::Error, sanitized_response
         end
       end
 
@@ -60,6 +60,16 @@ module Cangaroo
         { request_id: request_id,
           parameters: connection.parameters.deep_merge(parameters)
         }.merge(payload)
+      end
+
+      def sanitize_response(request)
+        if %w(200 201 202).include?(request.response.code)
+          request.parsed_response
+        elsif request.response.code == '204'
+          ''
+        else
+          request.parsed_response['summary'] rescue request.response.body
+        end
       end
     end
   end
