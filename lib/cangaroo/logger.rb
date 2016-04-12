@@ -52,7 +52,10 @@ module Cangaroo
         def stringify_tags(additional_tags)
           additional_tags = additional_tags.dup
 
-          # TODO add support for cangaroo-specific metatags
+          if translation = additional_tags.delete(:translation)
+            additional_tags[:translation_id] = translation.id
+            # TODO extract other important info from the translation
+          end
 
           @default_tags.merge(additional_tags).map { |k,v| "#{k}=#{v}" }.join(' ')
         end
