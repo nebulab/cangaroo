@@ -1,5 +1,6 @@
 module Cangaroo
   class CountJsonObject
+    include Cangaroo::Log
     include Interactor
 
     before :prepare_context
@@ -9,6 +10,8 @@ module Cangaroo
         o[k] = v.size
         o
       end
+
+      log.info 'total consumed payloads', count: context.object_count
     end
 
     private
