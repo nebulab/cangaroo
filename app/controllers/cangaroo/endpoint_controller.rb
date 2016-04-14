@@ -41,14 +41,19 @@ module Cangaroo
     def key
       if Rails.configuration.cangaroo.basic_auth
         user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
-        pass
+        user
       else
         request.headers['X-Hub-Store']
       end
     end
 
     def token
-      request.headers['X-Hub-Access-Token']
+      if Rails.configuration.cangaroo.basic_auth
+        user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
+        pass
+      else
+        request.headers['X-Hub-Access-Token']
+      end
     end
   end
 end
