@@ -5,3 +5,4 @@ spec/dummy/
 coverage/
 vendor/bundle
 *emfile.lock
+tmp/

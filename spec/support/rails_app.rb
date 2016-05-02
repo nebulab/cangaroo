@@ -6,7 +6,8 @@ require 'securerandom'
 
 require 'cangaroo'
 
-ENV['DATABASE_URL'] = 'postgresql://localhost/cangaroo_test?pool=5'
+database_path = File.expand_path('../../../tmp/cangaroo_test.sqlite3', __FILE__)
+ENV['DATABASE_URL'] = "sqlite3://#{database_path}"
 
 # Initialize our test app
 
@@ -20,6 +21,8 @@ ActiveSupport.on_load(:action_controller) do
 end
 
 RailsApp.initialize!
+
+ActiveRecord::Migrator.migrate "db/migrate"
 
 RailsApp.routes.draw do
   mount Cangaroo::Engine => "/cangaroo"
