@@ -25,7 +25,7 @@ module Cangaroo
     end
 
     before do
-      client.stub(:post).and_return(connection_response)
+      allow(client).to receive(:post).and_return(connection_response)
       allow(Cangaroo::Webhook::Client).to receive(:new).and_return(client)
       allow(Cangaroo::PerformFlow).to receive(:call)
     end
@@ -57,7 +57,7 @@ module Cangaroo
 
       context 'endpoint provides a empty response' do
         it 'should not restart the flow' do
-          client.stub(:post).and_return('')
+          allow(client).to receive(:post).and_return('')
 
           job.perform
 

@@ -55,7 +55,7 @@ module Cangaroo
 
       context 'when an exception was raised' do
         before do
-          HandleRequest.stub(:call).and_raise('An error')
+          allow(HandleRequest).to receive(:call).and_raise('An error')
           post :create, request_payload
         end
 
