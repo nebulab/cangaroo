@@ -5,6 +5,14 @@ rescue LoadError
 end
 
 require 'rdoc/task'
+require 'bundler/gem_tasks'
+require 'appraisal'
+require 'rspec/core'
+require 'rspec/core/rake_task'
+
+Bundler::GemHelper.install_tasks
+
+Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each { |f| load f }
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
@@ -14,19 +22,13 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-APP_RAKEFILE = File.expand_path('../spec/dummy/Rakefile', __FILE__)
-load 'rails/tasks/engine.rake'
-
 load 'rails/tasks/statistics.rake'
 
-Bundler::GemHelper.install_tasks
+desc 'Run Cangaroo specs.'
+RSpec::Core::RakeTask.new(:spec)
 
-Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each { |f| load f }
-
-require 'rspec/core'
-require 'rspec/core/rake_task'
-
-desc 'Run all specs in spec directory (excluding plugin specs)'
-RSpec::Core::RakeTask.new(spec: 'app:db:test:prepare')
+if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+  task :default => :appraisal
+end
 
 task default: :spec
