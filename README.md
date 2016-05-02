@@ -258,7 +258,7 @@ Each connection must have these fields:
   * basic_auth - (optional, Boolean) Defaults to false. If you would like to
     use HTTP basic auth in your integration instead of Wombat's key + token.
     Basic auth is handled [Stripe-style](https://www.quora.com/Why-does-Stripe-use-HTTP-Basic-Auth-with-a-token-instead-of-a-header),
-    without a username using `key` as your password. 
+    without a username using `key` as your password.
   * parameters - (optional, Hash) Used as parameters when Cangaroo makes a
     request to this connection
 
@@ -367,4 +367,6 @@ This project rocks and uses MIT-LICENSE.
 
 ## Tests
 
-Tests are written using rspec. `bundle exec rake` will run the test suite. If you create an additional migration, you'll need to `rm -Rf spec/dummy` to ensure the test database schema contains your latest changes.
+Tests are written using rspec and Appraisals, `bundle exec rake` will run the
+test suite for rails 4 and rails 5, if you want run specs only for for rails 4
+run `appraisal rails-4 rake`, for rails 5 run `appraisal rails-5 rake`.
