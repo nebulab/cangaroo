@@ -1,5 +1,6 @@
 require 'simplecov'
 require 'codeclimate-test-reporter'
+require 'pry-byebug'
 
 SimpleCov.start 'rails' do
   add_group 'Commands', 'app/commands'
@@ -8,7 +9,9 @@ CodeClimate::TestReporter.start
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../dummy/config/environment.rb', __FILE__)
+require File.expand_path('../support/rails_app.rb', __FILE__)
+
+puts "Testing against version #{ActiveRecord::VERSION::STRING}"
 
 # Prevent database truncation if the environment is production
 if Rails.env.production?
