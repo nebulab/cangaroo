@@ -42,6 +42,10 @@ module Cangaroo
 
     def key
       if Rails.configuration.cangaroo.basic_auth
+        if !ActionController::HttpAuthentication::Basic.has_basic_credentials?(request)
+          return nil
+        end
+
         user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
         user
       else
@@ -51,6 +55,10 @@ module Cangaroo
 
     def token
       if Rails.configuration.cangaroo.basic_auth
+        if !ActionController::HttpAuthentication::Basic.has_basic_credentials?(request)
+          return nil
+        end
+
         user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
         pass
       else
