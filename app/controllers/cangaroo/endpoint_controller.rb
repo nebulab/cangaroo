@@ -18,8 +18,10 @@ module Cangaroo
 
     private
 
-    def handle_error
-      unless Rails.env.development?
+    def handle_error(exception)
+      if Rails.env.development?
+        raise(exception)
+      else
         render json: { error: 'Something went wrong!' }, status: 500
       end
     end
