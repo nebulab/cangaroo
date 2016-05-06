@@ -68,7 +68,7 @@ module Cangaroo
         elsif request.response.code == '204'
           ''
         else
-          request.parsed_response['summary'] || request.response.body rescue request.response.body
+          (request.parsed_response['summary'] || request.response.body) rescue request.response.body
         end
       end
     end
