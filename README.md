@@ -70,7 +70,6 @@ believe the Spree/Solidus community will help to make it better.
 ## Dependencies
 
   - rails (>= 4.2.4)
-  - postgresql
 
 ## Installation
 
