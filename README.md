@@ -362,10 +362,22 @@ this json body:
 }
 ```
 
-This project rocks and uses MIT-LICENSE.
-
 ## Tests
 
 Tests are written using rspec and Appraisals, `bundle exec rake` will run the
 test suite for rails 4 and rails 5, if you want run specs only for for rails 4
 run `appraisal rails-4 rake`, for rails 5 run `appraisal rails-5 rake`.
+
+## License
+
+Cangaroo is copyright © 2016 [Nebulab](http://nebulab.it/). It is free software, and may be redistributed under the terms specified in the [license].
+
+## About
+
+![Nebulab](http://nebulab.it/assets/logo.png)
+
+Cangaroo is funded and maintained by the [Nebulab](http://nebulab.it/) team.
+
+We firmly believe in the power of open-source. [Contact us](http://nebulab.it/contact-us/) if you like our work and you need help with your project design or development.
+
+[license]: MIT-LICENSE
