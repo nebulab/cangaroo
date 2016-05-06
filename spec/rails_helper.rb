@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Rails.configuration.cangaroo.basic_auth = false
     Rails.configuration.cangaroo.jobs = []
+    Rails.configuration.cangaroo.poll_job = []
   end
 
   # The different available types are documented in the features, such as in

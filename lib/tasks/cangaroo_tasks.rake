@@ -1,4 +1,7 @@
-# desc "Explaining what the task does"
-# task :cangaroo do
-#   # Task goes here
-# end
+namespace :cangaroo do
+  task poll: :environment do
+    Cangaroo::RunPolls.call(
+      jobs: Rails.configuration.cangaroo.poll_jobs
+    )
+  end
+end

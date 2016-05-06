@@ -18,25 +18,40 @@ describe Cangaroo::PerformJobs do
   end
 
   describe '.call' do
-    let(:json_body) { load_fixture('json_payload_ok.json') }
-
     let(:job_a) { double('job_a', perform?: true, enqueue: nil) }
     let(:job_b) { double('job_b', perform?: false, enqueue: nil) }
 
-    it 'instantiates jobs' do
-      context
-      expect(JobA).to have_received(:new).exactly(4).times
-      expect(JobB).to have_received(:new).exactly(4).times
+    context 'payload with objects' do
+      let(:json_body) { load_fixture('json_payload_ok.json') }
+
+      it 'instantiates jobs' do
+        context
+        expect(JobA).to have_received(:new).exactly(4).times
+        expect(JobB).to have_received(:new).exactly(4).times
+      end
+
+      it 'enqueues only cangaroo jobs that can perform' do
+        context
+        expect(job_a).to have_received(:enqueue).exactly(4).times
+        expect(job_b).to_not have_received(:enqueue)
+      end
+
+      it 'succeeds' do
+        expect(context).to be_a_success
+      end
     end
 
-    it 'enqueues only cangaroo jobs that can perform' do
-      context
-      expect(job_a).to have_received(:enqueue).exactly(4).times
-      expect(job_b).to_not have_received(:enqueue)
+    context 'payload with no objects' do
+      let(:json_body) { load_fixture('json_payload_empty.json') }
+
+      it 'succeeds' do
+        context
+
+        expect(context).to be_a_success
+        expect(job_a).to_not have_received(:enqueue)
+        expect(job_b).to_not have_received(:enqueue)
+      end
     end
 
-    it 'succeeds' do
-      expect(context).to be_a_success
-    end
   end
 end
