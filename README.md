@@ -43,8 +43,9 @@ An usual flow is:
 3. Integrations convert data to be compatible with an external service API;
 4. Integrations send converted data to the external service.
 
-Cangaroo is born with built-in Wombat extensions compatibility, so you can use
-any extensions that you can find [here](https://github.com/wombat).
+Cangaroo is born with built-in Wombat extensions compatibility. All the
+old Wombat exensions have been migrated to the [Cangaroo organization](https://github.com/cangaroo)
+so that they can be maintained more easily.
 
 ## The whole story
 
