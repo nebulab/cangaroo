@@ -40,6 +40,7 @@ module Cangaroo
     def prepare_context
       context.request_id = context.json_body.delete('request_id')
       context.summary = context.json_body.delete('summary')
+      context.parameters = context.json_body.delete('parameters')
     end
   end
 end
