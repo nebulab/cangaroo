@@ -6,3 +6,4 @@ coverage/
 vendor/bundle
 *emfile.lock
 tmp/
+gemfiles/vendor
