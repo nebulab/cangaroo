@@ -36,7 +36,7 @@ RSpec.describe 'Cangaroo', type: :request do
   end
   let(:json) do
     {
-      "#{type}" => json_payload
+      type.to_s => json_payload
     }.to_json
   end
 
@@ -62,9 +62,9 @@ RSpec.describe 'Cangaroo', type: :request do
 
       transformed_request_params = {
         headers: {
-          "X_HUB_TOKEN"=>"8d49cddb4291562808bfca1bee8a9f7cf947a987",
-          "Content-Type"=>"application/json",
-          "Accept"=>"application/json"
+          "X_HUB_TOKEN" => "8d49cddb4291562808bfca1bee8a9f7cf947a987",
+          "Content-Type" => "application/json",
+          "Accept" => "application/json"
         },
         body: "{\"request_id\":1234,\"parameters\":{\"first\":\"first\",\"second\":\"second\",\"email\":\"info@nebulab.it\"},\"#{type}\":#{json_payload.to_json}}"
       }
