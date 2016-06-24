@@ -24,7 +24,7 @@ and to external services.
 
 This kind of configuration allows:
 - don't overload your application resources allowing to scale the number
-or requests that can be handled;
+of requests that can be handled;
 - in case of errors or downtimes of any system component, Cangaroo stores each
 message and retry sending it until it's successfully delivered;
 - use and contribute to a lot of integrations that has already be done by the
@@ -38,8 +38,8 @@ services via API.
 
 An usual flow is:
 
-1. Cangaroo receive some data from an application;
-2. Data is send to one or more integrations;
+1. Cangaroo receives some data from an application;
+2. Data is sent to one or more integrations;
 3. Integrations convert data to be compatible with an external service API;
 4. Integrations send converted data to the external service.
 
