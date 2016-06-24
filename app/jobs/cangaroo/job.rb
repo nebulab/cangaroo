@@ -7,6 +7,7 @@ module Cangaroo
     class_configuration :connection
     class_configuration :path, ''
     class_configuration :parameters, {}
+    class_configuration :process_response, true
 
     def perform(*)
       restart_flow(connection_request)
@@ -30,6 +31,10 @@ module Cangaroo
     def restart_flow(response)
       # if no json was returned, the response should be discarded
       return if response.blank?
+
+      unless self.process_response
+        return
+      end
 
       PerformFlow.call(
         source_connection: destination_connection,

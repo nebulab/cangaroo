@@ -55,6 +55,14 @@ module Cangaroo
                 jobs: Rails.configuration.cangaroo.jobs)
       end
 
+      it 'should not restart the flow when disabled' do
+        job.class.process_response(false)
+
+        job.perform
+
+        expect(Cangaroo::PerformFlow).to_not have_received(:call)
+      end
+
       context 'endpoint provides a empty response' do
         it 'should not restart the flow' do
           allow(client).to receive(:post).and_return('')
