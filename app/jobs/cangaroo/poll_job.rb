@@ -13,7 +13,6 @@ module Cangaroo
     def perform(*)
       log.set_context(self)
 
-      last_poll = Time.at(arguments.first.fetch(:last_poll)).to_datetime
       current_time = DateTime.now
 
       if !perform?(current_time)
@@ -21,7 +20,7 @@ module Cangaroo
         return
       end
 
-      log.info 'initiating poll', last_poll: last_poll.to_i
+      log.info 'initiating poll', last_poll: last_poll_timestamp.to_i
 
       response = Cangaroo::Webhook::Client.new(destination_connection, path)
         .post({ last_poll: last_poll_timestamp.to_i }, @job_id, parameters)
