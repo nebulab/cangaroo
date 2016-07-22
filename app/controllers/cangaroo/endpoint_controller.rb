@@ -34,33 +34,32 @@ module Cangaroo
 
     def ensure_json_request
       return if request.headers['Content-Type'] == 'application/json'
+
       render nothing: true, status: 406
     end
 
     def key
-      if Rails.configuration.cangaroo.basic_auth
-        if !ActionController::HttpAuthentication::Basic.has_basic_credentials?(request)
-          return nil
-        end
-
-        user, _pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
-        user
-      else
-        request.headers['X-Hub-Store']
-      end
+      return user if Rails.configuration.cangaroo.basic_auth
+      request.headers['X-Hub-Store']
     end
 
     def token
-      if Rails.configuration.cangaroo.basic_auth
-        if !ActionController::HttpAuthentication::Basic.has_basic_credentials?(request)
-          return nil
-        end
+      return password if Rails.configuration.cangaroo.basic_auth
+      request.headers['X-Hub-Access-Token']
+    end
 
-        _user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
-        pass
-      else
-        request.headers['X-Hub-Access-Token']
-      end
+    def user
+      user_and_password.try(:first)
+    end
+
+    def password
+      user_and_password.try(:last)
+    end
+
+    def user_and_password
+      return nil unless ActionController::HttpAuthentication::Basic.has_basic_credentials?(request)
+
+      ActionController::HttpAuthentication::Basic.user_name_and_password(request)
     end
   end
 end
