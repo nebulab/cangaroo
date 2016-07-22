@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Cangaroo
-  RSpec.describe Job, type: :job do
+  RSpec.describe PushJob, type: :job do
     let(:job_class) { FakeJob }
     let(:destination_connection) { create(:cangaroo_connection) }
     let(:type) { 'orders' }
@@ -35,16 +35,14 @@ module Cangaroo
       end
 
       it 'calls post on client' do
-        job.perform
+        job.perform_now
         expect(client).to have_received(:post)
           .with(job.transform, job.job_id, email: 'info@nebulab.it')
       end
 
       it 'restart the flow' do
         job.class.process_response(true)
-
-        job.perform
-
+        job.perform_now
         expect(Cangaroo::PerformFlow).to have_received(:call)
           .once
           .with(source_connection: destination_connection,
@@ -55,7 +53,7 @@ module Cangaroo
       it 'should not restart the flow when disabled' do
         job.class.process_response(false)
 
-        job.perform
+        job.perform_now
 
         expect(Cangaroo::PerformFlow).to_not have_received(:call)
       end
@@ -64,7 +62,7 @@ module Cangaroo
         it 'should not restart the flow' do
           allow(client).to receive(:post).and_return('')
 
-          job.perform
+          job.perform_now
 
           expect(Cangaroo::PerformFlow).to_not have_received(:call)
         end
