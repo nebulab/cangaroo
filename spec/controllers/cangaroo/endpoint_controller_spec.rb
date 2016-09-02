@@ -38,7 +38,8 @@ module Cangaroo
 
           it 'responds with the number of objects received in payload' do
             res = JSON.parse(response.body)
-            expect(res).to eq('orders' => 2, 'shipments' => 2)
+            expect(res).to eq('orders' => 2, 'shipments' => 2,
+                              'line_items' => 0, 'line-items' => 0)
           end
         end
 
