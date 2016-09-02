@@ -47,7 +47,10 @@ module Cangaroo
       end
 
       it 'restart the flow' do
+        job.class.process_response(true)
+
         job.perform
+
         expect(Cangaroo::PerformFlow).to have_received(:call)
           .once
           .with(source_connection: destination_connection,
