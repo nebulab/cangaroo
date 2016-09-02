@@ -8,16 +8,11 @@ module Cangaroo
       'minProperties': 1,
       'additionalProperties': false,
       'patternProperties': {
-        '^[a-z]*$': {
+        '^[a-z-_]*$': {
           'type': 'array',
           'items': {
             'type': 'object',
-            'required': ['id'],
-            'properties': {
-              'id': {
-                'type': 'string'
-              }
-            }
+            'required': ['id']
           }
         }
       }
