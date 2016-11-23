@@ -2,6 +2,9 @@ require_dependency 'cangaroo/application_controller'
 
 module Cangaroo
   class EndpointController < ApplicationController
+    include Cangaroo::Log
+
+    before_action :generate_guid
     before_action :ensure_json_request
     before_action :handle_request
 
@@ -18,7 +21,13 @@ module Cangaroo
 
     private
 
+    def generate_guid
+      @guid ||= SecureRandom.uuid
+      logger.tagged(@guid) { logger.trace('New Request', payload: params.to_hash) }
+    end
+
     def handle_error(exception)
+      logger.tagged(@guid) { logger.error('error', exception) }
       if Rails.env.development?
         raise(exception)
       else
@@ -28,6 +37,7 @@ module Cangaroo
 
     def handle_request
       @command = HandleRequest.call(
+        guid: @guid,
         key: key,
         token: token,
         json_body: params[:endpoint].to_json,
@@ -37,6 +47,7 @@ module Cangaroo
 
     def ensure_json_request
       return if request.headers['Content-Type'] == 'application/json'
+      logger.tagged(@guid) { logger.info('Not a JSON request') }
       render nothing: true, status: 406
     end
 

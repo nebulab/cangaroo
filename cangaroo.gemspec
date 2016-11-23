@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'interactor-rails', '~> 2.0'
   s.add_dependency 'json-schema', '~> 2.5.1'
   s.add_dependency 'httparty', '~> 0.13.7'
+  s.add_dependency 'semantic_logger', '~> 3.3'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'codeclimate-test-reporter'

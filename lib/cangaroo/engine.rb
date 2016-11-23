@@ -10,6 +10,10 @@ module Cangaroo
     end
 
     config.before_configuration do
+      # Set the global default log level
+      SemanticLogger.default_level = :trace
+      SemanticLogger.add_appender(file_name: 'cangaroo.log', formatter: :color)
+
       Rails.configuration.cangaroo = ActiveSupport::OrderedOptions.new
       Rails.configuration.cangaroo.jobs = []
       Rails.configuration.cangaroo.poll_jobs = []

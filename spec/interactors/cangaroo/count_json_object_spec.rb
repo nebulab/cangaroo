@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Cangaroo::CountJsonObject do
-  subject(:context) { Cangaroo::CountJsonObject.call(json_body: json_body) }
+  subject(:context) { Cangaroo::CountJsonObject.call(json_body: json_body, guid: SecureRandom.uuid) }
 
   let(:json_body) { load_fixture('json_payload_ok.json') }
 
