@@ -83,7 +83,7 @@ module Cangaroo
       describe '#create' do
         it 'successfully authorized against a connection key and token' do
           request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic
-            .encode_credentials(connection.key, connection.token)
+                                              .encode_credentials(connection.key, connection.token)
 
           post :create, request_payload
 
@@ -94,7 +94,7 @@ module Cangaroo
           connection.update(key: '')
 
           request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic
-            .encode_credentials('', connection.token)
+                                              .encode_credentials('', connection.token)
 
           post :create, request_payload
 
@@ -108,6 +108,5 @@ module Cangaroo
         end
       end
     end
-
   end
 end

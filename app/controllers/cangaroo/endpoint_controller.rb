@@ -46,7 +46,7 @@ module Cangaroo
           return nil
         end
 
-        user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
+        user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
         user
       else
         request.headers['X-Hub-Store']
@@ -59,7 +59,7 @@ module Cangaroo
           return nil
         end
 
-        user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
+        user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
         pass
       else
         request.headers['X-Hub-Access-Token']

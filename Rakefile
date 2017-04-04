@@ -28,7 +28,7 @@ desc 'Run Cangaroo specs.'
 RSpec::Core::RakeTask.new(:spec)
 
 if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
-  task :default => :appraisal
+  task default: :appraisal
 end
 
 task default: :spec
