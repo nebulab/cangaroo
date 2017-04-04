@@ -1,11 +1,9 @@
 require 'simplecov'
-require 'codeclimate-test-reporter'
 require 'pry-byebug'
 
 SimpleCov.start 'rails' do
   add_group 'Commands', 'app/commands'
 end
-CodeClimate::TestReporter.start
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
