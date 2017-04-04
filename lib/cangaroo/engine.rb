@@ -14,6 +14,7 @@ module Cangaroo
       Rails.configuration.cangaroo.jobs = []
       Rails.configuration.cangaroo.poll_jobs = []
       Rails.configuration.cangaroo.basic_auth = false
+      Rails.configuration.cangaroo.logger = nil
     end
   end
 end
