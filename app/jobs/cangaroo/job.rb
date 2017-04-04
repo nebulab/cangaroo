@@ -25,14 +25,14 @@ module Cangaroo
 
     def connection_request
       Cangaroo::Webhook::Client.new(destination_connection, path)
-        .post(transform, @job_id, parameters)
+                               .post(transform, @job_id, parameters)
     end
 
     def restart_flow(response)
       # if no json was returned, the response should be discarded
       return if response.blank?
 
-      unless self.process_response
+      unless process_response
         return
       end
 

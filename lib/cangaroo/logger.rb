@@ -2,7 +2,6 @@ require 'logger'
 
 module Cangaroo
   module Log
-
     def log
       Cangaroo::Log::Writer.instance
     end
@@ -21,46 +20,42 @@ module Cangaroo
         @default_tags = {}
       end
 
-      def set_context(job)
+      def context(job)
         reset_context!
 
-        @default_tags.merge!({
-          job: job.class.to_s,
-          job_id: job.job_id,
-          connection: job.class.connection
-        })
+        @default_tags.merge!( job: job.class.to_s,
+                              job_id: job.job_id,
+                              connection: job.class.connection)
       end
 
-      def error(msg, opts={})
+      def error(msg, opts = {})
         @l.error("#{msg}: #{stringify_tags(opts)}")
       end
 
-      def info(msg, opts={})
+      def info(msg, opts = {})
         @l.info("#{msg}: #{stringify_tags(opts)}")
       end
 
-      def debug(msg, opts={})
+      def debug(msg, opts = {})
         @l.debug("#{msg}: #{stringify_tags(opts)}")
       end
 
-      def warn(msg, opts={})
+      def warn(msg, opts = {})
         @l.warn("#{msg}: #{stringify_tags(opts)}")
       end
 
       private
 
-        def stringify_tags(additional_tags)
-          additional_tags = additional_tags.dup
+      def stringify_tags(additional_tags)
+        additional_tags = additional_tags.dup
 
-          if translation = additional_tags.delete(:translation)
-            additional_tags[:translation_id] = translation.id
-            # TODO extract other important info from the translation
-          end
-
-          @default_tags.merge(additional_tags).map { |k,v| "#{k}=#{v}" }.join(' ')
+        if translation = additional_tags.delete(:translation)
+          additional_tags[:translation_id] = translation.id
+          # TODO: extract other important info from the translation
         end
 
+        @default_tags.merge(additional_tags).map { |k, v| "#{k}=#{v}" }.join(' ')
+      end
     end
-
   end
 end

@@ -8,7 +8,7 @@ RSpec.describe Cangaroo::PollJob, type: :job do
   end
 
   let(:job_class) { FakePollJob }
-  let(:job) { job_class.new({ last_poll: Time.now.to_i }) }
+  let(:job) { job_class.new(last_poll: Time.now.to_i) }
   let(:successful_pull_payload) { parse_fixture('json_payload_ok.json') }
 
   before do
@@ -46,9 +46,7 @@ RSpec.describe Cangaroo::PollJob, type: :job do
   end
 
   describe '#perform' do
-
     context 'pull is successful' do
-
       before do
         allow(Cangaroo::HandleRequest).to receive(:call).
           and_return(double(success?: true))
@@ -81,17 +79,15 @@ RSpec.describe Cangaroo::PollJob, type: :job do
 
         job.perform
       end
-
     end
 
     context 'pull fails' do
-
       before do
         Cangaroo::Webhook::Client.any_instance.stub(:post).and_return(parse_fixture('json_payload_ok.json'))
 
         allow(Cangaroo::HandleRequest).to receive(:call).and_return(double(
-          success?: false,
-          message: 'bad failure'
+                                                                      success?: false,
+                                                                      message: 'bad failure'
         ))
       end
 
@@ -100,8 +96,6 @@ RSpec.describe Cangaroo::PollJob, type: :job do
 
         expect(Cangaroo::PollTimestamp.for_class(FakePollJob).id).to be_nil
       end
-
     end
   end
-
 end

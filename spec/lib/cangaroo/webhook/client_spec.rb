@@ -11,11 +11,12 @@ module Cangaroo
 
       let(:request_id) { '123456' }
       let(:parameters) { { email: 'info@nebulab.it' } }
-      let(:payload) { { order: { id: 'R12345', state: 'completed' } } }
+      let(:payload) do
+        { order: { id: 'R12345', state: 'completed' } }
+      end
 
       let(:response) do
-        { 'request_id': '52f367367575e449c3000001',
-          'summary': 'Successfully updated order for R12345' }
+        { 'request_id' => '52f367367575e449c3000001', 'summary' => 'Successfully updated order for R12345' }
       end
 
       before do
@@ -28,13 +29,12 @@ module Cangaroo
           client.post(payload, request_id, parameters)
           expect(WebMock).to have_requested(:post,
                                             'http://www.store.com/api_path')
-            .with(
-              headers: { 'X_HUB_TOKEN': connection.token },
-              body: {
-                request_id: request_id,
-                parameters: connection.parameters.deep_merge(parameters),
-                order: { id: 'R12345', state: 'completed' }
-              }.to_json)
+            .with(headers: { 'X_HUB_TOKEN' => connection.token },
+                  body: {
+                    request_id: request_id,
+                    parameters: connection.parameters.deep_merge(parameters),
+                    order: { id: 'R12345', state: 'completed' }
+                  }.to_json)
         end
 
         context 'when basic auth is enabled' do
@@ -42,10 +42,7 @@ module Cangaroo
 
           it 'sends key and token as basic auth username and password' do
             expect(client.class).to receive(:post)
-              .with(anything, hash_including(basic_auth: {
-                username: connection.key,
-                password: connection.token }
-              ))
+              .with(anything, hash_including(basic_auth: { username: connection.key, password: connection.token } ))
               .and_return(double(response: double(code: '200'), parsed_response: response))
 
             client.post(payload, request_id, parameters)
@@ -69,16 +66,11 @@ module Cangaroo
 
         context 'when response code is not 200 (success)' do
           let(:failure_response) do
-            {
-              'request_id': '52f367367575e449c3000001',
-              'summary': 'Cannot update order. Order R12345 not found in storefront.'
-            }
+            { 'request_id' => '52f367367575e449c3000001', 'summary' => 'Cannot update order. Order R12345 not found in storefront.' }
           end
 
           before do
-            stub_request(:post, /^#{url}.*/).to_return(
-              body: failure_response.to_json,
-              status: 500)
+            stub_request(:post, /^#{url}.*/).to_return(body: failure_response.to_json, status: 500)
           end
 
           it 'raises Cangaroo::Webhook::Error' do
@@ -91,9 +83,7 @@ module Cangaroo
           let(:failure_response) { 'i am not json' }
 
           before do
-            stub_request(:post, /^#{url}.*/).to_return(
-              body: failure_response,
-              status: 500)
+            stub_request(:post, /^#{url}.*/).to_return(body: failure_response, status: 500)
           end
 
           it 'raises Cangaroo::Webhook::Error' do

@@ -7,6 +7,6 @@ class CreateCangarooPollTimestamps < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :cangaroo_poll_timestamps, [:job], :name => 'index_cangaroo_poll_timestamps_on_job'
+    add_index :cangaroo_poll_timestamps, [:job], name: 'index_cangaroo_poll_timestamps_on_job'
   end
 end

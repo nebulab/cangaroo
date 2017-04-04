@@ -52,6 +52,5 @@ describe Cangaroo::PerformJobs do
         expect(job_b).to_not have_received(:enqueue)
       end
     end
-
   end
 end

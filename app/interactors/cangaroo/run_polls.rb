@@ -7,6 +7,5 @@ module Cangaroo
         poll_job.new.enqueue
       end
     end
-
   end
 end

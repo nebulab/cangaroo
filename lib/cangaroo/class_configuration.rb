@@ -10,12 +10,12 @@ module Cangaroo
 
         define_singleton_method(key) do |*args|
           if args.empty?
-            value = self.send(:"_#{key}")
+            value = send(:"_#{key}")
 
             return value.nil? ? default : value
           end
 
-          self.send(:"_#{key}=", args.first)
+          send(:"_#{key}=", args.first)
         end
 
         define_method(key) do
@@ -23,6 +23,5 @@ module Cangaroo
         end
       end
     end
-
   end
 end

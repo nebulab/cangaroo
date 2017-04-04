@@ -13,8 +13,8 @@ module Cangaroo
 
     private
 
-      def set_default_parameters
-        self.parameters ||= {}
-      end
+    def set_default_parameters
+      self.parameters ||= {}
+    end
   end
 end

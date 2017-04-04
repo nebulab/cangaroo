@@ -21,23 +21,18 @@ module Cangaroo
         }
 
         if Rails.configuration.cangaroo.basic_auth
-          request_options.merge!(
-            basic_auth: {
-              username: connection.key,
-              password: connection.token
-            }
-          )
+          request_options[:basic_auth] = {
+            username: connection.key,
+            password: connection.token
+          }
         end
 
         req = self.class.post(url, request_options)
 
         sanitized_response = sanitize_response(req)
 
-        if %w(200 201 202 204).include?(req.response.code)
-          sanitized_response
-        else
-          fail Cangaroo::Webhook::Error, sanitized_response
-        end
+        fail Cangaroo::Webhook::Error, sanitized_response unless %w(200 201 202 204).include?(req.response.code)
+        sanitized_response
       end
 
       private
@@ -58,8 +53,7 @@ module Cangaroo
 
       def body(payload, request_id, parameters)
         { request_id: request_id,
-          parameters: connection.parameters.deep_merge(parameters)
-        }.merge(payload)
+          parameters: connection.parameters.deep_merge(parameters) }.merge(payload)
       end
 
       def sanitize_response(request)
@@ -68,7 +62,11 @@ module Cangaroo
         elsif request.response.code == '204'
           ''
         else
-          (request.parsed_response['summary'] || request.response.body) rescue request.response.body
+          begin
+            (request.parsed_response['summary'] || request.response.body)
+          rescue
+            request.response.body
+          end
         end
       end
     end
