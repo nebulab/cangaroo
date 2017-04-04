@@ -19,11 +19,8 @@ module Cangaroo
     private
 
     def handle_error(exception)
-      if Rails.env.development?
-        raise(exception)
-      else
-        render json: { error: 'Something went wrong!' }, status: 500
-      end
+      raise(exception) if Rails.env.development?
+      render json: { error: 'Something went wrong!' }, status: 500
     end
 
     def handle_request
@@ -46,7 +43,7 @@ module Cangaroo
           return nil
         end
 
-        user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
+        user, _pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
         user
       else
         request.headers['X-Hub-Store']
@@ -59,7 +56,7 @@ module Cangaroo
           return nil
         end
 
-        user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
+        _user, pass = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
         pass
       else
         request.headers['X-Hub-Access-Token']

@@ -31,11 +31,8 @@ module Cangaroo
 
         sanitized_response = sanitize_response(req)
 
-        if %w(200 201 202 204).include?(req.response.code)
-          sanitized_response
-        else
-          fail Cangaroo::Webhook::Error, sanitized_response
-        end
+        fail Cangaroo::Webhook::Error, sanitized_response unless %w(200 201 202 204).include?(req.response.code)
+        sanitized_response
       end
 
       private

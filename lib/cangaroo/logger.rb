@@ -20,7 +20,7 @@ module Cangaroo
         @default_tags = {}
       end
 
-      def set_context(job)
+      def context(job)
         reset_context!
 
         @default_tags.merge!( job: job.class.to_s,

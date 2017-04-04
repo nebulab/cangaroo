@@ -1,10 +1,18 @@
+# Custom rules
 Style/ClassAndModuleChildren:
   Enabled: false
 
 AllCops:
+  TargetRubyVersion: 2.2
   Exclude:
     - 'spec/dummy/**/*'
     - 'bin/**/*'
+    - Appraisals
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - cangaroo.gemspec
 
 # Relaxed.Ruby.Style
 
