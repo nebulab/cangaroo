@@ -28,6 +28,7 @@ require 'rspec/rails'
   shoulda_matchers
   factory_girl
   spec_helpers
+  fake_job
 ).each { |path| require File.expand_path("../support/#{path}.rb", __FILE__) }
 
 # Checks for pending migrations before tests are run.
@@ -40,6 +41,7 @@ RSpec.configure do |config|
     Rails.configuration.cangaroo.basic_auth = false
     Rails.configuration.cangaroo.jobs = []
     Rails.configuration.cangaroo.poll_job = []
+    Rails.configuration.cangaroo.logger = nil
   end
 
   # The different available types are documented in the features, such as in
