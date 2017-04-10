@@ -2,12 +2,6 @@ require 'rails_helper'
 
 module Cangaroo
   RSpec.describe Job, type: :job do
-    class FakeJob < Cangaroo::Job
-      connection :store
-      path '/webhook_path'
-      parameters(email: 'info@nebulab.it')
-    end
-
     let(:job_class) { FakeJob }
     let(:destination_connection) { create(:cangaroo_connection) }
     let(:type) { 'orders' }
