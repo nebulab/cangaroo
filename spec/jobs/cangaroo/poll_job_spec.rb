@@ -85,10 +85,8 @@ RSpec.describe Cangaroo::PollJob, type: :job do
       before do
         Cangaroo::Webhook::Client.any_instance.stub(:post).and_return(parse_fixture('json_payload_ok.json'))
 
-        allow(Cangaroo::HandleRequest).to receive(:call).and_return(double(
-                                                                      success?: false,
-                                                                      message: 'bad failure'
-        ))
+        allow(Cangaroo::PerformFlow).to receive(:call).and_return(double(success?: false,
+                                                                         message: 'bad failure'))
       end
 
       it 'does not update timestamp if pull fails' do

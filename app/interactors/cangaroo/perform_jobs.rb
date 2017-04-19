@@ -21,7 +21,7 @@ module Cangaroo
     def initialize_jobs(type, payload)
       context.jobs.map do |klass|
         klass.new(
-          connection: context.source_connection,
+          source_connection: context.source_connection,
           type: type,
           payload: payload
         )
