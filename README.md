@@ -47,27 +47,6 @@ Cangaroo is born with built-in Wombat extensions compatibility. All the
 old Wombat exensions have been migrated to the [Cangaroo organization](https://github.com/cangaroo)
 so that they can be maintained more easily.
 
-## The whole story
-
-Some time ago Spree decided to shut down Wombat and to release its closed
-source code to customers only, so we had to decide how to go ahead, and the
-alternative were:
-
-1. hosting Wombat by ourselves for some of our clients
-2. starting a new open source project with an API compliant with Wombat.
-
-We believe in open source so we chose the latter.
-
-The idea is a bit different from Wombat, the goal of this project is to
-provide a backwards compatible API and give the developers the freedom to change
-and customize it.
-
-At least for the first release we won't have an admin interface, we believe
-developers prefer code and using Rails console directly.
-
-We hope this project can help to make the migration from Wombat easier and we
-believe the Spree/Solidus community will help to make it better.
-
 ## Dependencies
 
   - rails (>= 4.2.4)
