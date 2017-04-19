@@ -1,46 +1,24 @@
 module Cangaroo
-  class PollJob < ActiveJob::Base
-    include Cangaroo::LoggerHelper
-    include Cangaroo::ClassConfiguration
-
-    queue_as :cangaroo
-
-    class_configuration :connection
+  class PollJob < BaseJob
     class_configuration :frequency, 1.day
-    class_configuration :path, ''
-    class_configuration :parameters, {}
+
+    attr_reader :current_time
+
+    def transform
+      { last_poll: last_poll_timestamp.to_i }
+    end
 
     def perform(*)
-      current_time = DateTime.now
+      @current_time = DateTime.now
 
       if !perform?(current_time)
         Cangaroo.logger.info 'skipping poll', job_tags
         return
       end
 
-      Cangaroo.logger.info 'initiating poll', job_tags(last_poll: last_poll_timestamp.to_i)
+      restart_flow(connection_request)
 
-      response = Cangaroo::Webhook::Client.new(destination_connection, path)
-                                          .post({ last_poll: last_poll_timestamp.to_i }, @job_id, parameters)
-
-      Cangaroo.logger.info 'processing poll results'
-
-      command = HandleRequest.call(
-        key: destination_connection.key,
-        token: destination_connection.token,
-        json_body: response.to_json,
-        jobs: Rails.configuration.cangaroo.jobs
-      )
-
-      if !command.success?
-        fail Cangaroo::Webhook::Error, command.message
-      end
-
-      Cangaroo.logger.info 'updating last poll', job_tags(last_poll: current_time)
-
-      last_job_poll = Cangaroo::PollTimestamp.for_class(self.class)
-      last_job_poll.value = current_time
-      last_job_poll.save!
+      update_last_poll_timestamp
     end
 
     def perform?(execution_time)
@@ -50,12 +28,16 @@ module Cangaroo
 
     protected
 
-    def last_poll_timestamp
-      @last_poll_timestamp ||= Cangaroo::PollTimestamp.for_class(self.class).value
+    def update_last_poll_timestamp
+      Cangaroo.logger.info 'updating last poll', job_tags(last_poll: current_time)
+
+      last_job_poll = Cangaroo::PollTimestamp.for_class(self.class)
+      last_job_poll.value = current_time
+      last_job_poll.save!
     end
 
-    def destination_connection
-      @connection ||= Cangaroo::Connection.find_by!(name: connection)
+    def last_poll_timestamp
+      @last_poll_timestamp ||= Cangaroo::PollTimestamp.for_class(self.class).value
     end
   end
 end

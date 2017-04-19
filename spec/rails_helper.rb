@@ -28,7 +28,7 @@ require 'rspec/rails'
   shoulda_matchers
   factory_girl
   spec_helpers
-  fake_job
+  fake_push_job
 ).each { |path| require File.expand_path("../support/#{path}.rb", __FILE__) }
 
 # Checks for pending migrations before tests are run.

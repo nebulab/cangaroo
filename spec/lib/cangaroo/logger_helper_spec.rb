@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Cangaroo::LoggerHelper do
   describe '#job_tags' do
-    let(:job_class) { FakeJob }
+    let(:job_class) { FakePushJob }
     let(:type) { 'orders' }
     let(:payload) { { id: 'O123' } }
     let(:options) do
@@ -15,7 +15,7 @@ describe Cangaroo::LoggerHelper do
     let(:extra_tags) { { tag1: 1, tag2: 2 } }
 
     it 'merges given tags with job class name, job_id and connection name' do
-      expect(job.job_tags(extra_tags)).to eq(extra_tags.merge(job: 'FakeJob', job_id: job.job_id, connection: destination_connection.name))
+      expect(job.job_tags(extra_tags)).to eq(extra_tags.merge(job: 'FakePushJob', job_id: job.job_id, connection: destination_connection.name))
     end
   end
 end

@@ -1,4 +1,4 @@
-class FakeJob < Cangaroo::Job
+class FakePushJob < Cangaroo::PushJob
   include Cangaroo::LoggerHelper
 
   connection :store
