@@ -32,25 +32,6 @@ message and retry sending it until it's successfully delivered;
 - use and contribute to a lot of integrations that has already be done by the
 community.
 
-
-#### Integrations
-
-Cangaroo integrations are pieces of code that allow interacting with external
-services via API.
-
-An usual flow is:
-
-1. Cangaroo receives some data from an application;
-2. Data is sent to one or more integrations;
-3. Integrations convert data to be compatible with an external service API;
-4. Integrations send converted data to the external service.
-
-Cangaroo is born with built-in Wombat (you can read more about it 
-[here](https://github.com/nebulab/cangaroo/wiki/The-whole-story)) 
-extensions compatibility. All the old Wombat exensions have been migrated to 
-the [Cangaroo organization](https://github.com/cangaroo) so that they can be 
-maintained more easily.
-
 ## Dependencies
 
   - rails (>= 4.2.4)
@@ -88,7 +69,12 @@ Now mount the engine into your `routes.rb` file:
 
 ## Usage
 
-First create a `connection`:
+To authenticate incoming messages from an app/service we need to instruct 
+Cangaroo, this is done through [connections](https://github.com/nebulab/cangaroo/wiki/Connection).
+A basic connection have a custom `name` the `url` of that connection and a `key`
+and `password` for authentication; on the other side the `connection` will use
+the [Push API](https://github.com/nebulab/cangaroo/wiki/Push-API) to send messages to Cangaroo.
+Praticaly create a `connection` means add it to the database:
 
 ```ruby
   Cangaroo::Connection.create(
@@ -99,35 +85,62 @@ First create a `connection`:
   )
 ```
 
-then create a `cangaroo job`:
+Then Jobs are used to do stuff with incoming connection messages, they are 
+simple `ActiveJob::Base` with a little more features, Cangaroo provide three 
+different kind of jobs:
+
+- Simple Job
+- [Push Job](https://github.com/nebulab/cangaroo/wiki/Push-Job)
+- Poll Job
+
+in this example the simple job is used, suppose that an ecommerce sends a 
+message to Cangaroo with all new orders and the only feature is to log only the 
+`completed` orders. 
+For this feature is needed a `Job` that inherits from `Cangaroo::Job` class,
+this job implement two method, the standard `perform` method that will log
+the message and a `perform?` method, this is were rules that decide to run or
+not run the job leaves. 
+The job could be something like this:
 
 ```ruby
 module Cangaroo
-  class ShipmentJob < Cangaroo::Job
-    connection :mystore
-    path '/update_shipment'
-
+  class LogJob < Cangaroo::Job
+    def perform(:source_connection, :type, :payload)
+      super
+      Cangaroo.logger.info 'New order received', payload: payload
+    end
+    
     def perform?
-      type == 'shipments' &&
-      payload['status'] == 'shipped'
+      type == 'orders' &&
+      payload['status'] == 'completed'
     end
   end
 end
 ```
 
-and add this job to the `Rails.configuration.cangaroo.jobs`:
+The first thing to notice is that `super` is called on the `perform` method, 
+this is because `Cangaroo::Job#perform` sets the `source_connection`, `type` and 
+the `payload` attributes so they can be used in `perform?` and `perform` 
+methods. 
+The `perform?` method check if the message type is an `orders` kind and if 
+the the order is completed looking into the payload. Every time Cangaroo receive
+a message run the `perform?` method for each job, if it return `true`
+it enqueue the job.
+Then the `perform` method simple log the information.
+
+The last thing to do is let Cangaroo know that the job exists, this is done by
+add it to the `Rails.configuration.cangaroo.jobs`:
 
 ```ruby
   # config/initializers/cangaroo.rb
 
-  Rails.configuration.cangaroo.jobs = [Cangaroo::ShipmentJob]
+  Rails.configuration.cangaroo.jobs = [Cangaroo::LogJob]
 ```
 
 ## How it works
 
 Cangaroo provides a Push API where you can send your data. After data has
-been received, Cangaroo sends data to integrations and webhooks based on your
-business logic.
+been received, Cangaroo run jobs based on your business logic.
 
 This is the detailed flow:
 
@@ -141,210 +154,6 @@ This is the detailed flow:
   - If there are no errors, for each object in the json body, Cangaroo checks
     what jobs must be enqueued by calling the `#perform?` method. Each job
     returning `true` to `#perform?` will be enqueued.
-
-## Push API
-
-Cangaroo has just a single endpoint where you can push your data, based on
-where `Cangaroo::Engine` is mounted, it will be reachable under the `/endpoint`
-path. For example, if the `Cangaroo::Engine` is mounted under `/cangaroo` the
-Push API path will be `/cangaroo/endpoint`.
-
-When you push to the endpoint the HTTP Request must respect this conventions:
-
-  * It must be a `POST` request
-  * It must be an `application/json` request so you have to set the
-    `Content-Type` header to `application/json`
-  * The request must have the `X-Hub-Store` and `X-Hub-Access-Token` headers set
-    to a value that exists in the `Cangaroo::Connection` model (to learn more
-    refer to the `Connection` documentation below)
-  * The request body must be a well formatted json.
-
-The json body contains data that will be processed by Cangaroo, the following is
-an example of an order that will be processed on Cangaroo:
-
-```json
-{
-  "orders": [
-    {
-      "id": "O154085346",
-      "status": "complete",
-      "email": "user@example.com"
-    }
-  ]
-}
-```
-
-The root objects of the json body must contain an array with the objects that
-Cangaroo needs to process. The only required field for the objects contained
-in the arrays will be the `id` key.
-Push API also supports multiple objects so a request with the following body:
-
-```json
-  {
-     "orders":[
-        {
-           "id":"O154085346172",
-           "state":"cart"
-        },
-        {
-           "id":"O154085343224",
-           "state":"payed"
-        }
-     ],
-     "shipments":[
-        {
-           "id":"S53454325",
-           "state":"shipped"
-        },
-        {
-           "id":"S53565543",
-           "state":"waiting"
-        }
-     ]
-  }
-
-```
-
-will create 2 `orders` and 2 `shipments`.
-
-When Cangaroo receives the request it responds with a 200(OK) HTTP status code
-and the response body will contain numbers of the objects in the payload, for
-example for the previous request the response will be:
-
-```json
-  {
-    "orders": 2,
-    "shipments": 2
-  }
-```
-
-if something goes wrong Cangaroo responds with an HTTP error code with an error
-message in the body, for example:
-
-```json
-  {
-    "error": "The property '#/orders/0' did not contain a required property of 'id' in schema"
-  }
-```
-
-## Connection
-
-Connection are services that can send and receive data from Cangaroo.
-Each connection must have these fields:
-
-  * name - (required, String) A generic name for this connection
-  * url - (required, String) The url where Cangaroo pushes the data
-  * key - (required, String) It's used for authentication
-    (used to check the request's 'X-Hub-Store' header)
-  * token - (required, String) It's used for authentication
-    (used to check the request's 'X-Hub-Access-Token' header)
-  * basic_auth - (optional, Boolean) Defaults to false. If you would like to
-    use HTTP basic auth in your integration instead of Wombat's key + token.
-    Basic auth is handled [Stripe-style](https://www.quora.com/Why-does-Stripe-use-HTTP-Basic-Auth-with-a-token-instead-of-a-header),
-    without a username using `key` as your password.
-  * parameters - (optional, Hash) Used as parameters when Cangaroo makes a
-    request to this connection
-
-For now we don't have a Web GUI so you have to create the connection on your
-own by running the code somewhere on your server, for example from the Rails
-console:
-
-```ruby
-  Cangaroo::Connection.create(
-    name: 'mystore',
-    url: 'http://www.mystore.com',
-    key: 'puniethahquoe5aisefoh9ci0Shuaniemei6jahx',
-    token: 'ahsh8phuezu3xuhohs6kai5vaB1tae0wiy1shohp',
-    parameters: {
-      'channel': 'mysubstore'
-    }
-  )
-```
-
-## Cangaroo Jobs
-
-Jobs are where the `payload` is pushed to the configured connection.
-
-To allow a job to be executed add it to the `Rails.configuration.cangaroo.jobs`
-configuration, for example in an initializer:
-
-```ruby
-  # config/initializers/cangaroo.rb
-
-  Rails.configuration.cangaroo.jobs = [Cangaroo::AddOrderJob, Cangaroo::UpdateShipmentJob]
-```
-
-The `Cangaroo::Job` class inherits from `ActiveJob::Base`, so you can use
-any 3rd-party queuing library supported by ActiveJob.
-When the job is performed Cangaroo makes a `POST` request to the connection with
-the configured path and build the json body with the result of the `#transform`
-instance method merged with this attributes:
-
-  * `request_id` - is the `job_id` coming from `ActiveJob::Base`
-  * `parameters` - are the parameters configured by the `parameters` class method
-
-You can use the following `Cangaroo::Job` class methods to configure the job's
-behaivor:
-
-  * connection - is the connection name (see connection for more info)
-  * path - this path will be appended to your `connection.url`
-  * parameters - these parameters will be merged with `connection.parameters`,
-    they will be added to the json body.
-
-it also has a `#perform?` instance method that must be implemented. This method
-must return `true` or `false` as Cangaroo will use it to understand if the job
-must be performed. Inside the `#perform?` method you'll be able to access the
-`source_connection`, `type` and `payload` instance attributes.
-
-The `#transform` instance method can be overridden to customize the json body
-request, it will have the `source_connection`, `type` and `payload` variables
-(like the `#perform?` method) and must return an `Hash`.
-
-The following is an example of a `Cangaroo::Job`:
-
-```ruby
-  module Cangaroo
-    class ShipmentJob < Cangaroo::Job
-      connection :mystore
-      path '/update_shipment'
-      parameters({ timestamp: Time.now })
-
-      def transform
-        payload = super
-        payload['shipment']['updated_at'] = Time.now
-        payload
-      end
-
-      def perform?
-        type == 'shipments' &&
-        payload['status'] == 'shipped'
-      end
-    end
-  end
-```
-
-Suppose that the `mystore` connection has a `url` set to "http://mystore.com"
-an the `payload` is something like:
-
-```ruby
-  { "id": "S123", "status": "shipped" }
-```
-
-It will do a `POST` request to `http://mystore.com/update_shipment` with
-this json body:
-
-```json
-{
-  "request_id": "088e29b0ab0079560dea5d3e5aeb2f7868af661e",
-  "parameters": {
-    "timestamp": "2015-11-04 14:14:30 +0100"
-  },
-  "shipment": {
-    "id": "S123",
-    "status": "shipped"
-  }
-}
-```
 
 ## Tests
 
