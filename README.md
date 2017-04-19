@@ -6,9 +6,11 @@
 
 # Cangaroo
 
-Cangaroo helps developers integrating their apps with any service.
-It is a Rails Engine that can be installed on any Rails application and is used
-as a connection hub from one or multiple applications and external services.
+Cangaroo is a Rails Engine that helps developers integrating their apps with 
+any service. 
+It's like a message broker, it receive messages from apps/services then based 
+on developer defined rules it can route the messages to other apps/services or 
+just execute jobs. 
 
 [TODO] add self-explanatory image here.
 
@@ -43,9 +45,11 @@ An usual flow is:
 3. Integrations convert data to be compatible with an external service API;
 4. Integrations send converted data to the external service.
 
-Cangaroo is born with built-in Wombat extensions compatibility. All the
-old Wombat exensions have been migrated to the [Cangaroo organization](https://github.com/cangaroo)
-so that they can be maintained more easily.
+Cangaroo is born with built-in Wombat (you can read more about it 
+[here](https://github.com/nebulab/cangaroo/wiki/The-whole-story)) 
+extensions compatibility. All the old Wombat exensions have been migrated to 
+the [Cangaroo organization](https://github.com/cangaroo) so that they can be 
+maintained more easily.
 
 ## Dependencies
 
