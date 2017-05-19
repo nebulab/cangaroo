@@ -22,7 +22,7 @@ module Cangaroo
       command = PerformFlow.call(
         source_connection: destination_connection,
         json_body: response,
-        jobs: Rails.configuration.cangaroo.jobs.reject{ |job| job == self.class}
+        jobs: Rails.configuration.cangaroo.jobs.reject{ |job| job == self.class }
       )
 
       fail Cangaroo::Webhook::Error, command.message unless command.success?

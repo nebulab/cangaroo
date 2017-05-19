@@ -17,7 +17,7 @@ RSpec.describe 'Push flow' do
              response_body: {
                'summary' => "Successfully updated order for #{payed_order['id']}",
                'orders' => [{ id: payed_order['id'], state: 'confirmed' }]
-            })
+             })
   }
 
   let!(:update_order_store_api) {
@@ -34,7 +34,7 @@ RSpec.describe 'Push flow' do
              response_body: {
                'summary' => "Successfully shipped order #{payed_order['id']}",
                'orders' => [{ id: payed_order['id'], state: 'shipped' }]
-            })
+             })
   }
 
   let!(:shipped_mail_api) {

@@ -14,12 +14,12 @@ module Cangaroo
 
       allow_any_instance_of(job).to receive(:job_id).and_return(job_id)
 
-      request_body = request_body.merge({
+      request_body = request_body.merge(
         request_id: job_id,
         parameters: connection.parameters || {}
-      })
+      )
 
-      response_body = response_body.merge({ 'request_id' => job_id }).to_json if response_body
+      response_body = response_body.merge('request_id' => job_id).to_json if response_body
 
       stub_request(:post, "#{connection.url}#{job.path}")
         .with(body: request_body,
