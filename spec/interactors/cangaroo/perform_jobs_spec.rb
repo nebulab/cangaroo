@@ -22,7 +22,7 @@ describe Cangaroo::PerformJobs do
     let(:job_b) { double('job_b', perform?: false, enqueue: nil) }
 
     context 'payload with objects' do
-      let(:json_body) { load_fixture('json_payload_ok.json') }
+      let(:json_body) { JSON.parse(load_fixture('json_payload_ok.json')) }
 
       it 'instantiates jobs' do
         context
@@ -42,7 +42,7 @@ describe Cangaroo::PerformJobs do
     end
 
     context 'payload with no objects' do
-      let(:json_body) { load_fixture('json_payload_empty.json') }
+      let(:json_body) { JSON.parse(load_fixture('json_payload_empty.json')) }
 
       it 'succeeds' do
         context

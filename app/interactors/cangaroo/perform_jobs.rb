@@ -3,16 +3,12 @@ module Cangaroo
     include Interactor
 
     def call
-      data.each do |type, payloads|
+      context.json_body.each do |type, payloads|
         payloads.each { |payload| enqueue_jobs(type, payload) }
       end
     end
 
     private
-
-    def data
-      @data ||= JSON.parse(context.json_body)
-    end
 
     def enqueue_jobs(type, payload)
       initialize_jobs(type, payload).select(&:perform?).each(&:enqueue)
