@@ -21,7 +21,7 @@ module Cangaroo
     before :prepare_context
 
     def call
-      validation_response = JSON::Validator.fully_validate(SCHEMA, context.json_body)
+      validation_response = JSON::Validator.fully_validate(SCHEMA, context.json_body.to_json)
 
       if validation_response.empty?
         return true
