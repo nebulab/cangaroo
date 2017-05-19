@@ -48,7 +48,7 @@ module Cangaroo
         expect(Cangaroo::PerformFlow).to have_received(:call)
           .once
           .with(source_connection: destination_connection,
-                json_body: connection_response.to_json,
+                json_body: connection_response,
                 jobs: Rails.configuration.cangaroo.jobs)
       end
 

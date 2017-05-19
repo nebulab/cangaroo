@@ -10,7 +10,7 @@ module Cangaroo
     protected
 
     def connection_request
-      Cangaroo::Webhook::Client.new(destination_connection, path).post(transform, @job_id, parameters)
+      Cangaroo::Webhook::Client.new(destination_connection, path).post(transform, job_id, parameters)
     end
 
     def restart_flow(response)
@@ -21,8 +21,8 @@ module Cangaroo
 
       command = PerformFlow.call(
         source_connection: destination_connection,
-        json_body: response.to_json,
-        jobs: Rails.configuration.cangaroo.jobs
+        json_body: response,
+        jobs: Rails.configuration.cangaroo.jobs.reject{ |job| job == self.class }
       )
 
       fail Cangaroo::Webhook::Error, command.message unless command.success?

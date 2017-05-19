@@ -12,6 +12,7 @@ ENV['DATABASE_URL'] = "sqlite3://#{database_path}"
 # Initialize our test app
 
 class RailsApp < Rails::Application
+  config.active_job.queue_adapter = :inline
   config.secret_key_base = SecureRandom.hex
   config.eager_load = false
 end

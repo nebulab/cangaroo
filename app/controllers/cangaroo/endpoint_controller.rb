@@ -1,7 +1,5 @@
-require_dependency 'cangaroo/application_controller'
-
 module Cangaroo
-  class EndpointController < ApplicationController
+  class EndpointController < ActionController::Base
     before_action :ensure_json_request
     before_action :handle_request
 
@@ -27,7 +25,7 @@ module Cangaroo
       @command = HandleRequest.call(
         key: key,
         token: token,
-        json_body: params[:endpoint].to_json,
+        json_body: JSON.parse(request.raw_post),
         jobs: Rails.configuration.cangaroo.jobs
       )
     end

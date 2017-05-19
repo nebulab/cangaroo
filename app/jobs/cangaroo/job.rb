@@ -4,16 +4,20 @@ module Cangaroo
 
     queue_as :cangaroo
 
-    attr_reader :source_connection, :type, :payload
-
-    def perform(source_connection:, type:, payload:)
-      @source_connection = source_connection
-      @type = type
-      @payload = payload
-    end
-
     def perform?
       fail NotImplementedError
+    end
+
+    def source_connection
+      arguments.first.fetch(:source_connection)
+    end
+
+    def type
+      arguments.first.fetch(:type)
+    end
+
+    def payload
+      arguments.first.fetch(:payload)
     end
   end
 end
