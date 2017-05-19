@@ -369,7 +369,7 @@ Tests are written using rspec and Appraisals
 
 * Run `bundle exec appraisal install` before running any specs
 * `bundle exec rake` will run the test suite for rails 4 and rails 5
-* `bundle exec rspec` will run specs for a single rails version
+* `bundle exec rspec` will run specs for the latest rails version
 * if you want run specs only for for rails 4 run `appraisal rails-4 rake`, for rails 5 run `appraisal rails-5 rake`.
 
 ## License
