@@ -48,7 +48,7 @@ RSpec.describe 'Push flow' do
                                          Cangaroo::WarehouseJob,
                                          Cangaroo::ShippedOrderMailJob]
 
-    post endpoint_index_path, store_payload, headers
+    post endpoint_index_path, params: store_payload, headers: headers
   end
 
   describe 'when new order in state cart coming from store' do
