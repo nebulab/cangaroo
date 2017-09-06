@@ -1,4 +1,4 @@
-class CreateCangarooPollTimestamps < ActiveRecord::Migration[4.2]
+class CreateCangarooPollTimestamps < SolidusSupport::Migration[4.2]
   def change
     create_table :cangaroo_poll_timestamps do |t|
       t.string     :job
