@@ -1,4 +1,4 @@
-class CreateCangarooConnections < SolidusSupport::Migration[4.2]
+class CreateCangarooConnections < Cangaroo::Migration[4.2]
   def change
     create_table :cangaroo_connections do |t|
       t.string :name
