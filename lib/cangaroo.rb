@@ -8,6 +8,7 @@ require 'cangaroo/logger_helper'
 require 'cangaroo/webhook/error'
 require 'cangaroo/webhook/client'
 require 'cangaroo/class_configuration'
+require 'cangaroo/migration'
 
 module Cangaroo
   class << self

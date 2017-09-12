@@ -1,4 +1,4 @@
-class CreateCangarooConnections < ActiveRecord::Migration
+class CreateCangarooConnections < Cangaroo::Migration[4.2]
   def change
     create_table :cangaroo_connections do |t|
       t.string :name
