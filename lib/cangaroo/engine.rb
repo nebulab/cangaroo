@@ -15,6 +15,7 @@ module Cangaroo
       Rails.configuration.cangaroo.poll_jobs = []
       Rails.configuration.cangaroo.basic_auth = false
       Rails.configuration.cangaroo.logger = nil
+      Rails.configuration.cangaroo.client_timeout = nil
     end
   end
 end
