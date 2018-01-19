@@ -49,6 +49,31 @@ module Cangaroo
           end
         end
 
+        describe 'Rails.configuration.cangaroo.client_timeout' do
+
+          context 'when set' do
+            before { Rails.configuration.cangaroo.client_timeout = 120 }
+            it 'sets the timeout config on the client' do
+              expect(client.class).to receive(:post)
+                .with(anything, hash_including(timeout: 120 ))
+                .and_return(double(response: double(code: '200'), parsed_response: response))
+
+              client.post(payload, request_id, parameters)
+            end
+          end
+
+          context 'when not set' do
+            before { Rails.configuration.cangaroo.client_timeout = nil }
+            it 'does not set the timeout config on the client' do
+              allow(client.class).to receive(:post)
+                .with(anything, hash_excluding(:timeout))
+                .and_return(double(response: double(code: '200'), parsed_response: response))
+
+              client.post(payload, request_id, parameters)
+            end
+          end
+        end
+
         context 'when response code is 200 (success)' do
           it 'returns the parsed response' do
             expect(client.post(payload, request_id, parameters))
