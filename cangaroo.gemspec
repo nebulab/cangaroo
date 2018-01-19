@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.2.0'
 
   s.add_dependency 'rails', '>= 4.2.4'
-  s.add_dependency 'interactor-rails', '~> 2.0.2'
+  s.add_dependency 'interactor-rails', '~> 2.1.1'
   s.add_dependency 'json-schema', '~> 2.8.0'
   s.add_dependency 'httparty', '~> 0.14.0'
 
