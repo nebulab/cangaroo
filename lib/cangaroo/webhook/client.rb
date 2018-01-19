@@ -27,6 +27,10 @@ module Cangaroo
           }
         end
 
+        if timeout = Rails.configuration.cangaroo.client_timeout
+          request_options[:timeout] = timeout
+        end
+
         req = self.class.post(url, request_options)
 
         sanitized_response = sanitize_response(req)
