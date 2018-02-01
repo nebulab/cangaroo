@@ -13,14 +13,14 @@ module Cangaroo
     context 'when wombat authentication is enabled' do
       describe '#create' do
         before do
-          post endpoint_index_path, request_payload, headers
+          post endpoint_index_path, params: request_payload, headers: headers
         end
 
         it 'accepts only application/json requests' do
           expect(response.status).to eq(202)
 
           headers['Content-Type'] = 'text/html'
-          post endpoint_index_path, {}, headers
+          post endpoint_index_path, params: {}, headers: headers
           expect(response.status).to eq(406)
         end
 
@@ -39,7 +39,7 @@ module Cangaroo
         context 'when error' do
           before do
             headers['X-Hub-Access-Token'] = 'wrongtoken'
-            post endpoint_index_path, request_payload, headers
+            post endpoint_index_path, params: request_payload, headers: headers
           end
 
           it 'responds with the command error code' do
@@ -53,8 +53,8 @@ module Cangaroo
 
         context 'when an exception was raised' do
           before do
-            HandleRequest.stub(:call).and_raise('An error')
-            post endpoint_index_path, request_payload, headers
+            allow(HandleRequest).to receive(:call).and_raise('An error')
+            post endpoint_index_path, params: request_payload, headers: headers
           end
 
           it 'responds with 500' do
@@ -77,7 +77,7 @@ module Cangaroo
         it 'successfully authorized against a connection key and token' do
           headers['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(connection.key, connection.token)
 
-          post endpoint_index_path, request_payload, headers
+          post endpoint_index_path, params: request_payload, headers: headers
 
           expect(response.status).to eq(202)
         end
@@ -87,13 +87,13 @@ module Cangaroo
 
           headers['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('', connection.token)
 
-          post endpoint_index_path, request_payload, headers
+          post endpoint_index_path, params: request_payload, headers: headers
 
           expect(response.status).to eq(202)
         end
 
         it 'fails to authenticate when basic auth is not provided' do
-          post endpoint_index_path, request_payload, headers
+          post endpoint_index_path, params: request_payload, headers: headers
 
           expect(response.status).to eq(401)
         end
