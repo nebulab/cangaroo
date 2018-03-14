@@ -28,6 +28,7 @@ require 'rspec/rails'
   shoulda_matchers
   factory_girl
   spec_helpers
+  compatible_http
 ).each { |path| require File.expand_path("../support/#{path}.rb", __FILE__) }
 
 Dir[File.dirname(__FILE__) + '/support/jobs/*.rb'].each { |file| require file }
