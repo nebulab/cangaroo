@@ -62,8 +62,9 @@ The idea is a bit different from Wombat, the goal of this project is to
 provide a backwards compatible API and give the developers the freedom to change
 and customize it.
 
-At least for the first release we won't have an admin interface, we believe
-developers prefer code and using Rails console directly.
+If you're interested in hosting an admin interface similar in functionality to
+Wombat, check out the `cangaroo_ui`
+[gem](https://github.com/ascensionpress/cangaroo_ui).
 
 We hope this project can help to make the migration from Wombat easier and we
 believe the Spree/Solidus community will help to make it better.
