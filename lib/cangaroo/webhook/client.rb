@@ -49,6 +49,7 @@ module Cangaroo
 
       def headers
         {
+          'X-HUB-TOKEN' => connection.token || '',
           'X_HUB_TOKEN' => connection.token || '',
           'Content-Type' => 'application/json',
           'Accept' => 'application/json'
